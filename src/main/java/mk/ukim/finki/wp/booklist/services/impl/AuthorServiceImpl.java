@@ -1,0 +1,63 @@
+package mk.ukim.finki.wp.booklist.services.impl;
+
+import mk.ukim.finki.wp.booklist.models.Author;
+import mk.ukim.finki.wp.booklist.models.exceptions.ApiException;
+import mk.ukim.finki.wp.booklist.repositories.JpaAuthorRepository;
+import mk.ukim.finki.wp.booklist.services.AuthorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class AuthorServiceImpl implements AuthorService {
+    @Autowired
+    private JpaAuthorRepository authorRepository;
+
+    @Override
+    public Author create(Author author) {
+        checkUniqueId(author.getId());
+        return this.authorRepository.save(author);
+    }
+
+    @Override
+    public Author edit(int id, Author author) {
+        if(!authorRepository.existsById(id))
+            throw new ApiException("Author doesn't exist");
+        Optional<Author> optionalEntity = this.authorRepository.findById(id);
+        Author old = optionalEntity.get();
+        old.setName(author.getName());
+        old.setBirthDate(author.getBirthDate());
+        old.setBirthPlace(author.getBirthPlace());
+        return this.authorRepository.save(old);
+    }
+
+    @Override
+    public void delete(int id) {
+        authorRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Author> getAllAuthors() {
+        return authorRepository.findAll();
+    }
+
+    @Override
+    public Author get(int id) {
+        if(!authorRepository.existsById(id))
+            throw new ApiException("Author doesn't exist");
+        Optional<Author> optionalEntity = authorRepository.findById(id);
+        return optionalEntity.get();
+    }
+
+    @Override
+    public List<Author> getFavouriteAuthors() {
+        return authorRepository.getFavouriteAuthors();
+    }
+
+    public void checkUniqueId(int id){
+        if(authorRepository.existsById(id))
+            throw new ApiException("Author already exists");
+    }
+}
