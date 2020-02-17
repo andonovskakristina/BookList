@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,6 +20,9 @@ public class Genre {
     @Column(name = "genre_name")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    /*@JoinTable(name = "BOOK_GENRE",
+            joinColumns = @JoinColumn(name = "genre_name", referencedColumnName = "genre_name"),
+            inverseJoinColumns = @JoinColumn(name = "ISBN", referencedColumnName = "ISBN"))*/
     private List<Book> books;
 }

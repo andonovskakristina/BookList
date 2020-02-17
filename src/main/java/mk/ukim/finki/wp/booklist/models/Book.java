@@ -6,11 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "books")
@@ -26,8 +28,11 @@ public class Book {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate publicationDate;
 
+    //@JsonIgnore
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Author author;
 
     private double review;
@@ -43,7 +48,22 @@ public class Book {
 
     private boolean favourite;
 
+    private String imageUrl;
+
     @JsonIgnore
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany(fetch = FetchType.EAGER)
+    /*@JoinTable(name = "BOOK_GENRE",
+            joinColumns = @JoinColumn(name = "ISBN", referencedColumnName = "ISBN"),
+            inverseJoinColumns = @JoinColumn(name = "genre_name", referencedColumnName = "genre_name"))
+    @Column*/
     private List<Genre> genres;
+
+    public String getAuthorName() {
+        return author.getName();
+    }
+
+    public String getBookGenres() {
+        return genres.stream().map(Genre::getName)
+                .collect(Collectors.joining(", "));
+    }
 }

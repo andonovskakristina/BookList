@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.booklist.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +31,13 @@ public class Author {
 
     private String birthPlace;
 
+    private String imageUrl;
+
+    @Column(length = 2000)
+    private String biography;
+
+    //@JsonIgnore
     @JsonManagedReference
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Book> books;
 }

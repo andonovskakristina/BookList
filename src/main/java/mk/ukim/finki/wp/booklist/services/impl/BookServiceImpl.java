@@ -84,15 +84,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book markAsRead(String id, String comment) {
+    public Book markAsRead(String id) {
         if(!bookRepository.existsById(id))
             throw new ApiException("Book doesn't exist");
         Optional<Book> optionalEntity = bookRepository.findById(id);
         Book book = optionalEntity.get();
 
-        book.setRead(true);
-        if(comment != null)
-            book.setComment(comment);
+        if(book.isRead())
+            book.setRead(false);
+        else
+            book.setRead(true);
         return bookRepository.save(book);
     }
 
@@ -114,6 +115,18 @@ public class BookServiceImpl implements BookService {
                 book.setFavourite(true);
             }
         }
+        return bookRepository.save(book);
+    }
+
+    @Override
+    public Book addAComment(String id, String comment) {
+        if(!bookRepository.existsById(id))
+            throw new ApiException("Book doesn't exist");
+        Optional<Book> optionalEntity = bookRepository.findById(id);
+        Book book = optionalEntity.get();
+
+        if(comment != null)
+            book.setComment(comment);
         return bookRepository.save(book);
     }
 

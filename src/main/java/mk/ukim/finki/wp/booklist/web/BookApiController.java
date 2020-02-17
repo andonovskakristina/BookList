@@ -40,26 +40,32 @@ public class BookApiController {
                               @RequestParam(value="review") double review,
                               @RequestParam(value="numberPages") int numberPages,
                               @RequestParam(value="description") String description,
-                              @RequestParam(value="genres") String[] genreIds){
+                              @RequestParam(value="genres") String[] genreIds,
+                              @RequestParam(value="imageUrl") String imageUrl){
 
         List<Genre> genres = new ArrayList<>();
         for(int i = 0; i < genreIds.length; i++) {
             genres.add(genreService.get(genreIds[i]));
         }
 
-        Book result = bookService.create(new Book(ISBN, title, LocalDate.parse(publicationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")), authorService.get(authorId), review, numberPages, description, "", false, false, genres));
+        Book result = bookService.create(new Book(ISBN, title, LocalDate.parse(publicationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")), authorService.get(authorId), review, numberPages, description, "", false, false, imageUrl, genres));
         return result;
     }
 
     @PatchMapping("/{id}/markAsRead")
-    public Book markAsRead(@PathVariable String id,
-                                 @RequestParam(value="comment", required = false) String comment) {
-        return bookService.markAsRead(id, comment);
+    public Book markAsRead(@PathVariable String id) {
+        return bookService.markAsRead(id);
     }
 
     @PatchMapping("/{id}/updateFavourites")
     public Book updateFavourites(@PathVariable String id) {
         return bookService.updateFavourites(id);
+    }
+
+    @PatchMapping("/{id}/addAComment")
+    public Book addAComment(@PathVariable String id,
+                            @RequestParam(value = "comment") String comment) {
+        return bookService.addAComment(id, comment);
     }
 
     @PatchMapping("/{id}")
@@ -70,10 +76,11 @@ public class BookApiController {
                          @RequestParam(value="review") double review,
                          @RequestParam(value="numberPages") int numberPages,
                          @RequestParam(value="description") String description,
-                         @RequestParam(value="genres") List<Genre> genres){
+                         @RequestParam(value="genres") List<Genre> genres,
+                         @RequestParam(value="imageUrl") String imageUrl){
 
         Book old = bookService.get(id);
-        Book result = bookService.edit(id, new Book(id, title, LocalDate.parse(publicationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")), authorService.get(authorId), review, numberPages, description, old.getComment(), old.isRead(), old.isFavourite(), genres));
+        Book result = bookService.edit(id, new Book(id, title, LocalDate.parse(publicationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")), authorService.get(authorId), review, numberPages, description, old.getComment(), old.isRead(), old.isFavourite(), imageUrl, genres));
         return result;
     }
 
@@ -88,11 +95,16 @@ public class BookApiController {
     }
 
     @GetMapping()
+    public List<Book> getAllBooks(){
+        return bookService.getAllBooks();
+    }
+    /*
+    @GetMapping()
     public Page<Book> getAllBooks(@RequestHeader(name="page", defaultValue = "0", required = false) int page,
                                         @RequestHeader(name="page-size", defaultValue = "10", required = false) int size){
 
         return bookService.getAllBooksByPage(page, size);
-    }
+    }*/
 
     @GetMapping("/read")
     public List<Book> getAllReadBooks(){

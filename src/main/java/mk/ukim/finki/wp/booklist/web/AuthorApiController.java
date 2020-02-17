@@ -30,9 +30,11 @@ public class AuthorApiController {
     @PostMapping()
     public Author createNewAuthor(@RequestParam(value="name") String name,
                                  @RequestParam(value="birthDate") String birthDate,
-                                 @RequestParam(value="birthPlace") String birthPlace){
+                                 @RequestParam(value="birthPlace") String birthPlace,
+                                  @RequestParam(value="imageUrl") String imageUrl,
+                                  @RequestParam(value="biography") String biography){
 
-        Author author = new Author(0, name,LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")), birthPlace, Collections.emptyList());
+        Author author = new Author(0, name,LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")), birthPlace, imageUrl, biography, Collections.emptyList());
         return authorService.create(author);
     }
 
@@ -40,12 +42,16 @@ public class AuthorApiController {
     public void editAuthor(@PathVariable int id,
                            @RequestParam(value="name") String name,
                            @RequestParam(value="birthDate") String birthDate,
-                           @RequestParam(value="birthPlace") String birthPlace){
+                           @RequestParam(value="birthPlace") String birthPlace,
+                           @RequestParam(value="imageUrl") String imageUrl,
+                           @RequestParam(value="biography") String biography){
 
         Author author = authorService.get(id);
         author.setName(name);
         author.setBirthDate(LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         author.setBirthPlace(birthPlace);
+        author.setImageUrl(imageUrl);
+        author.setBiography(biography);
         authorService.edit(id, author);
     }
 

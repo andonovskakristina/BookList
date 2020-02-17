@@ -30,7 +30,9 @@ public interface BookService {
 
     List<Book> getAllBooksByNumberPagesBetween(int from, int to);
 
-    Book markAsRead(String id, String comment);
+    Book markAsRead(String id);
 
     Book updateFavourites(String id);
+
+    Book addAComment(String id, String comment);
 }

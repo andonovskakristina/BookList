@@ -23,4 +23,10 @@ public class GenreServiceImpl implements GenreService {
         Optional<Genre> optionalEntity = genreRepository.findById(id);
         return optionalEntity.get();
     }
+
+    @Override
+    public List<Genre> getAllGenres() {
+        return genreRepository.findAll();
+    }
+
 }
