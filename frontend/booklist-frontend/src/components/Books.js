@@ -60,41 +60,28 @@ class Books extends Component {
                   markAsRead={this.markAsRead}
             />);
         return (
-            <div className="container mt-5">
-                <div className="row">
-                    {this.state.List.length > 0 ?
-                        <div>
-                            <h4 className="text-upper text-left">Books</h4>
-                            <div className="table-responsive">
-                                <table className="table tr-history table-striped small">
-                                    <thead>
-                                    <tr>
-                                        <th>image</th>
-                                        <th scope="col">ISBN</th>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Publication Date</th>
-                                        <th scope="col">Author</th>
-                                        <th scope="col">Review</th>
-                                        <th scope="col">Number of Pages</th>
-                                        <th scope="col">Genre</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {newList}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        :
-                        <h3>The List of Books is empty</h3>}
-                    <div>
+            <div className="container mt-4">
+                <div className={"row"}>
+                <div className={"col-md-3"}></div>
+                <div className={"col-md-9"}>
+                <div className="row m-0">
+                    <div className={"text-right"} style={{flex: "auto"}}>
                         <Link to={"/books/new"}>
                             <button className="btn btn-outline-secondary">
                                 <span><strong>Add new book</strong></span>
                             </button>
                         </Link>
                     </div>
+                    {this.state.List.length > 0 ?
+                        <div style={{width: "100%"}}>
+                            {newList}
+                        </div>
+                        :
+                        <h3> The List of Books is empty</h3>}
+
                 </div>
+            </div>
+            </div>
             </div>
         )
     }
