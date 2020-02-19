@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import ReactPaginate from "react-paginate";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import Book from "./Book";
@@ -8,29 +9,37 @@ class Books extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            List: []
+            List: [],
+            page: 0,
+            pageSize: 3,
+            totalPages: 0
         }
     }
 
     componentDidMount() {
-        axios.get("http://localhost:8080/api/books")
-            .then(response => {
-                this.setState({
-                    List: response.data
-                });
-                console.log("resp " + response);
-                console.log(response);
-            })
-            .catch(error => {
-                console.log("error " + error)
-            });
+        this.fetchBooks();
     }
+
+    fetchBooks = (page = this.state.page, pageSize = this.state.pageSize) => {
+        axios.get(`http://localhost:8080/api/books?page=${page}&pageSize=${pageSize}`)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    List: response.data.content,
+                    page: response.data.number,
+                    pageSize: response.data.size,
+                    totalPages: response.data.totalPages
+                })
+            })
+            .catch(error => console.log(error));
+    };
 
     onDeleteElement = (bookISBN) => {
         axios.delete(`http://localhost:8080/api/books/${bookISBN}`)
             .then(response => {
                 console.log(response);
                 this.setState({ List: this.state.List.filter(l => l.isbn !== bookISBN)});
+                this.fetchBooks(0);
             })
             .catch(error => console.log(error.response))
     };
@@ -43,10 +52,32 @@ class Books extends Component {
             .catch(error => console.log(error.response))
     };
 
-    render() {
-        console.log("render");
-        console.log("state.list", this.state.List);
+    handlePageClick = (pageChangedEvent) => {
+        this.fetchBooks(pageChangedEvent.selected);
+    };
 
+    renderPaginate = () =>
+        <ReactPaginate previousLabel={'← Previous'}
+                       nextLabel={'Next →'}
+                       breakLabel={<span className="gap">...</span>}
+                       breakClassName={'break-me'}
+                       pageCount={this.state.totalPages}
+                       marginPagesDisplayed={2}
+                       pageRangeDisplayed={3}
+                       pageClassName={'page-item'}
+                       pageLinkClassName={'page-link btn'}
+                       previousClassName={'page-item'}
+                       nextClassName={'page-item'}
+                       previousLinkClassName={'page-link btn'}
+                       nextLinkClassName={'page-link btn'}
+                       forcePage={this.state.page}
+                       onPageChange={this.handlePageClick}
+                       containerClassName={'pagination justify-content-center'}
+                       activeClassName={'active'}
+                       disabledClassName={"disabled"}
+        />;
+
+    render() {
         const newList = this.state.List.map(book =>
             <Book ISBN={book.isbn}
                   title={book.title}
@@ -80,6 +111,7 @@ class Books extends Component {
                     {this.state.List.length > 0 ?
                         <div style={{width: "100%"}}>
                             {newList}
+                            {this.renderPaginate()}
                         </div>
                         :
                         <h3> The List of Books is empty</h3>}

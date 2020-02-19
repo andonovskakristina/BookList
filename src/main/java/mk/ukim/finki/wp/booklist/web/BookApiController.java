@@ -95,16 +95,11 @@ public class BookApiController {
     }
 
     @GetMapping()
-    public List<Book> getAllBooks(){
-        return bookService.getAllBooks();
-    }
-/*
-    @GetMapping()
-    public Page<Book> getAllBooks(@RequestHeader(name="page", defaultValue = "0", required = false) int page,
-                                        @RequestHeader(name="page-size", defaultValue = "3", required = false) int size){
+    public Page<Book> getAllBooks(@RequestParam(name="page", defaultValue = "0", required = false) int page,
+                                        @RequestParam(name="pageSize", defaultValue = "3", required = false) int size){
 
         return bookService.getAllBooksByPage(page, size);
-    }*/
+    }
 
     @GetMapping("/read")
     public List<Book> getAllReadBooks(){
