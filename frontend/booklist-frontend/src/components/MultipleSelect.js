@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-dropdown-select";
+import css from "../css/multiSelect.css"
 
 const MultiSelect = (props) => {
     const genres = props.genreOptions;

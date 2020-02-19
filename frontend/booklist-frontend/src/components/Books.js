@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import Book from "./Book";
+import Filters from "./Filters";
 
 class Books extends Component {
     constructor(props) {
@@ -14,7 +15,9 @@ class Books extends Component {
     componentDidMount() {
         axios.get("http://localhost:8080/api/books")
             .then(response => {
-                this.setState({List: response.data});
+                this.setState({
+                    List: response.data
+                });
                 console.log("resp " + response);
                 console.log(response);
             })
@@ -62,7 +65,9 @@ class Books extends Component {
         return (
             <div className="container mt-4">
                 <div className={"row"}>
-                <div className={"col-md-3"}></div>
+                <div className={"col-md-3"}>
+                    <Filters/>
+                </div>
                 <div className={"col-md-9"}>
                 <div className="row m-0">
                     <div className={"text-right"} style={{flex: "auto"}}>

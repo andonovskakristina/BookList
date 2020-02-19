@@ -133,7 +133,7 @@ class CreateNewBook extends Component{
                 <form className={"m-auto"} style={{width: "90%"}} onSubmit={this.onFormSubmit}>
                     <input type={"text"} name={"title"} placeholder={"Book title"} className={"form-control my-2"} onChange={this.onInputChange}/>
                     <input type={"text"} name={"ISBN"} placeholder={"Book ISBN"} className={"form-control my-2"} onChange={this.onInputChange}/>
-                    <SingleSelect name={"authorName"} value={""} authorOptions={this.state.authorOptions} authorOptionsIndexes={this.state.authorOptionsIndexes} onAuthorChange={this.onAuthorChange}/>
+                    <SingleSelect name={"authorName"} value={""} authorOptions={this.state.authorOptions} authorOptionsIndexes={this.state.authorOptionsIndexes} onAuthorChange={this.onAuthorChange} isMulti={false}/>
                     <MultipleSelect name={"genres"} genreOptions = {this.state.genreOptions} onGenreChange={this.onGenreChange}/>
                     <input type={"number"} name={"numberPages"} pattern="[0-9]*" placeholder={"Number of Pages"} className={"form-control my-2"} onChange={this.onInputChange}/>
                     <input type={"number"} step={".01"} max={"5.00"} name={"review"} placeholder={"Book review"} className={"form-control my-2"} onChange={this.onInputChange}/>

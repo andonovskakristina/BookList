@@ -19,6 +19,20 @@ class Book extends Component{
         }
     }
 
+    markAsRead() {
+        var btnRead = document.getElementById("btnRead");
+        if(btnRead.title === "Mark As Read") {
+            btnRead.title = "Not Read";
+            btnRead.innerHTML = "<span className=\"fa fa-book\"/>\n" +
+                "                                <span><strong> Not Read</strong></span>";
+        }
+        else {
+            btnRead.title = "Mark As Read";
+            btnRead.innerHTML = "<span className=\"fa fa-book\"/>\n" +
+                "                                <span><strong> Read</strong></span>";
+        }
+    };
+
     render() {
         return(
             <div className={"container"}>
@@ -53,10 +67,14 @@ class Book extends Component{
                             <Link to={`/books/${this.state.ISBN}/details`} className="text-dark">
                                 <span><strong>Read more</strong></span>
                             </Link><br/>
-                            <button className="btn btn-sm btn-outline-dark mt-2" onClick={()=>this.props.markAsRead(this.state.ISBN)} title={"Mark As Read"}>
-                                <span className="fa fa-book"/>
-                                <span><strong> Read</strong></span>
-                            </button>
+                            {this.state.read !== true ?
+                                <button className="btn btn-sm btn-outline-dark mt-2" title={"Mark As Read"} id={"btnRead"} value={this.state.read} onClick={e => { this.markAsRead(); this.props.markAsRead(this.state.ISBN)}}>
+                                    <span className="fa fa-book"/>
+                                    <span><strong> Read</strong></span>
+                                </button>
+                                :
+                                <span> You read this book.</span>}
+
                         </div>
                     </div>
                     <div className={"col-md mt-3"}>
@@ -72,35 +90,7 @@ class Book extends Component{
                     </div>
                 </div>
             </div>
-            /*
-            <tr>
-                <td><img src={this.props.imageUrl} style={{maxWidth: "100px", maxHeight: "100px"}}/></td>
-                <td>{this.props.ISBN}</td>
-                <td>{this.props.title}</td>
-                <td>{this.props.publicationDate.toString()}</td>
-                <td>{this.props.authorName}</td>
-                <td>{this.props.review}</td>
-                <td>{this.props.numberPages}</td>
-                <td>{this.props.genres}</td>
-                <td>
-                    <button className="btn btn-sm btn-outline-secondary " onClick={()=>this.props.markAsRead(this.state.ISBN)}>
-                        <span className="fa fa-book"/>
-                        <span><strong> Read</strong></span>
-                    </button>
-                    <Link to={`/books/${this.state.ISBN}/edit`} className="btn btn-sm btn-secondary">
-                        <span className="fa fa-edit"/>
-                        <span><strong> Edit</strong></span>
-                    </Link>
-                    <button className="btn btn-sm btn-outline-secondary " onClick={()=>this.props.onDelete(this.state.ISBN)}>
-                        <span className="fa fa-remove"/>
-                        <span><strong> Remove</strong></span>
-                    </button>
-                    <Link to={`/books/${this.state.ISBN}/details`} className="btn btn-sm btn-outline-dark">
-                        <span><strong>Details</strong></span>
-                    </Link>
-                </td>
-            </tr>
-        */)
+            )
     }
 }
 

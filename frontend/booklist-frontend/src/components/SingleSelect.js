@@ -4,6 +4,7 @@ import Select from "react-dropdown-select";
 const SingleSelect = (props) => {
     const authors = props.authorOptions;
     const indexes = props.authorOptionsIndexes;
+    const isMulti = props.isMulti;
 
     var options = [];
 
@@ -23,6 +24,7 @@ const SingleSelect = (props) => {
                 searchable={true}
                 placeholder={"Author"}
                 className={"form-control"}
+                multi={isMulti}
             />
         </div>
     );
