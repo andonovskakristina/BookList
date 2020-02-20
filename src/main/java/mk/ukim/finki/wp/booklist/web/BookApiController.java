@@ -9,6 +9,8 @@ import mk.ukim.finki.wp.booklist.services.BookService;
 import mk.ukim.finki.wp.booklist.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -93,13 +95,26 @@ public class BookApiController {
     public Book getBook(@PathVariable String id){
         return bookService.get(id);
     }
-
+/*
     @GetMapping()
     public Page<Book> getAllBooks(@RequestParam(name="page", defaultValue = "0", required = false) int page,
                                         @RequestParam(name="pageSize", defaultValue = "3", required = false) int size){
 
         return bookService.getAllBooksByPage(page, size);
+    }*/
+
+    @GetMapping()
+    public Page<Book> getAllBooks(@RequestParam(value = "authorIds", required = false) int[] authorIds,
+                                  @RequestParam(value = "genres", required = false) String[] genres,
+                                  @RequestParam(value = "search", required = false) String search,
+                                  @RequestParam(value = "numberPagesFrom", required = false, defaultValue = "0") int numberPagesFrom,
+                                  @RequestParam(value = "numberPagesTo", required = false, defaultValue = "0") int numberPagesTo,
+                                  @PageableDefault(page = 0, size = 3) Pageable pageable){
+        return bookService.getAllBooksByPageAndFilters(authorIds, genres, search, numberPagesFrom, numberPagesTo, pageable);
+
     }
+
+
 
     @GetMapping("/read")
     public List<Book> getAllReadBooks(){
@@ -109,5 +124,10 @@ public class BookApiController {
     @GetMapping("/favourite")
     public List<Book> getAllFavouriteBooks(){
         return bookService.getAllFavouriteBooks();
+    }
+
+    @GetMapping("/minMaxNumberPages")
+    public int[] getMinMaxNumberPages(){
+        return bookService.getMinMaxNumberPages();
     }
 }

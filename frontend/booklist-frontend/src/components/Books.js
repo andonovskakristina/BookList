@@ -4,6 +4,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import Book from "./Book";
 import Filters from "./Filters";
+import {max} from "moment";
 
 class Books extends Component {
     constructor(props) {
@@ -12,27 +13,38 @@ class Books extends Component {
             List: [],
             page: 0,
             pageSize: 3,
-            totalPages: 0
+            totalPages: 0,
+            authorIds: [],
+            search: "",
+            numberPagesFrom: 0,
+            numberPagesTo: 0,
+            genres: []
         }
     }
 
-    componentDidMount() {
-        this.fetchBooks();
-    }
-
-    fetchBooks = (page = this.state.page, pageSize = this.state.pageSize) => {
-        axios.get(`http://localhost:8080/api/books?page=${page}&pageSize=${pageSize}`)
+    fetchBooks = (page = this.state.page,
+                  size = this.state.pageSize,
+                  authors = this.state.authorIds,
+                  search = this.state.search,
+                  minPages = this.state.numberPagesFrom,
+                  maxPages = this.state.numberPagesTo,
+                  genres = this.state.genres
+                  ) => {
+        axios.get(`http://localhost:8080/api/books?authorIds=${authors}&genres=${genres}&search=${search}&numberPagesFrom=${minPages}&numberPagesTo=${maxPages}&page=${page}&pageSize=${size}`)
             .then(response => {
                 console.log(response);
-                this.setState({
-                    List: response.data.content,
-                    page: response.data.number,
-                    pageSize: response.data.size,
+                this.setState({ List: response.data.content,
+                    page: response.data.pageable.pageNumber,
+                    pageSize: response.data.pageable.pageSize,
                     totalPages: response.data.totalPages
-                })
+                                    });
             })
-            .catch(error => console.log(error));
+            .catch(error => console.log(error.response))
     };
+
+    componentDidMount() {
+        this.fetchBooks(0);
+    }
 
     onDeleteElement = (bookISBN) => {
         axios.delete(`http://localhost:8080/api/books/${bookISBN}`)
@@ -42,6 +54,18 @@ class Books extends Component {
                 this.fetchBooks(0);
             })
             .catch(error => console.log(error.response))
+    };
+
+    onFilter = (authors, search, minPages, maxPages, genres) => {
+        this.setState({
+            authorIds: authors,
+            search: search,
+            numberPagesFrom: minPages,
+            numberPagesTo: maxPages,
+            genres: genres
+        }, function() {
+            this.fetchBooks(0);
+        });
     };
 
     markAsRead = (bookISBN) => {
@@ -97,10 +121,10 @@ class Books extends Component {
             <div className="container mt-4">
                 <div className={"row"}>
                 <div className={"col-md-3"}>
-                    <Filters/>
+                    <Filters onFilter={this.onFilter}/>
                 </div>
                 <div className={"col-md-9"}>
-                <div className="row m-0">
+                <div className="row m-0 p-3" style={{backgroundColor: "whitesmoke"}}>
                     <div className={"text-right"} style={{flex: "auto"}}>
                         <Link to={"/books/new"}>
                             <button className="btn btn-outline-secondary">
@@ -114,7 +138,10 @@ class Books extends Component {
                             {this.renderPaginate()}
                         </div>
                         :
-                        <h3> The List of Books is empty</h3>}
+                        <div className={"row"}>
+                            <h3> The List of Books is empty</h3>
+                        </div>
+                    }
 
                 </div>
             </div>

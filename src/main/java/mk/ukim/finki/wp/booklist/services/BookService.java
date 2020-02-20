@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.booklist.services;
 
 import mk.ukim.finki.wp.booklist.models.Book;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,4 +36,8 @@ public interface BookService {
     Book updateFavourites(String id);
 
     Book addAComment(String id, String comment);
+
+    int[] getMinMaxNumberPages();
+
+    Page<Book> getAllBooksByPageAndFilters(int[] AuthorIds, String[] genres, String search, int numberPagesFrom, int numberPagesTo, Pageable pageable);
 }

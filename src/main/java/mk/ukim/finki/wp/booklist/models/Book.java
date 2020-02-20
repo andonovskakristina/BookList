@@ -30,7 +30,7 @@ public class Book {
 
     //@JsonIgnore
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Author author;
@@ -51,11 +51,7 @@ public class Book {
     private String imageUrl;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
-    /*@JoinTable(name = "BOOK_GENRE",
-            joinColumns = @JoinColumn(name = "ISBN", referencedColumnName = "ISBN"),
-            inverseJoinColumns = @JoinColumn(name = "genre_name", referencedColumnName = "genre_name"))
-    @Column*/
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Genre> genres;
 
     public String getAuthorName() {

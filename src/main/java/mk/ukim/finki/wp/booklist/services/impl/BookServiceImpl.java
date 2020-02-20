@@ -1,14 +1,20 @@
 package mk.ukim.finki.wp.booklist.services.impl;
 
+import mk.ukim.finki.wp.booklist.models.Author;
 import mk.ukim.finki.wp.booklist.models.Book;
+import mk.ukim.finki.wp.booklist.models.Genre;
 import mk.ukim.finki.wp.booklist.models.exceptions.ApiException;
+import mk.ukim.finki.wp.booklist.repositories.JpaAuthorRepository;
 import mk.ukim.finki.wp.booklist.repositories.JpaBookRepository;
+import mk.ukim.finki.wp.booklist.repositories.JpaGenreRepository;
 import mk.ukim.finki.wp.booklist.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +22,10 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
     @Autowired
     private JpaBookRepository bookRepository;
+    @Autowired
+    private JpaGenreRepository genreRepository;
+    @Autowired
+    private JpaAuthorRepository authorRepository;
 
     @Override
     public Book create(Book book) {
@@ -79,6 +89,61 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Page<Book> getAllBooksByPageAndFilters(int[] AuthorIds, String[] genres, String search, int numberPagesFrom, int numberPagesTo, Pageable pageable){
+
+        if((AuthorIds == null || AuthorIds.length == 0) &&
+                (genres == null || genres.length == 0) &&
+                search == null || search.isEmpty() &&
+                numberPagesFrom == 0 &&
+                numberPagesTo == 0) {
+            return bookRepository.findAll(pageable);
+        }
+
+        List<String> genreList;
+        if(genres == null || genres.length == 0) {
+            genreList = null;
+        }
+        else {
+            genreList = new ArrayList<>();
+            for (int i = 0; i < genres.length; i++) {
+                genreList.add(genres[i]);
+            }
+        }
+
+        List<Author> authorsList;
+        if(AuthorIds == null || AuthorIds.length == 0) {
+            authorsList = authorRepository.findAll();
+        }
+        else {
+            authorsList = new ArrayList<>();
+            for (int i = 0; i < AuthorIds.length; i++) {
+                if (!authorRepository.existsById(AuthorIds[i]))
+                    throw new ApiException("Author doesn't exist");
+                Optional<Author> optionalEntity = authorRepository.findById(AuthorIds[i]);
+                authorsList.add(optionalEntity.get());
+            }
+        }
+
+        if(numberPagesFrom == 0) {
+            numberPagesFrom = getMinMaxNumberPages()[0];
+        }
+
+        if(numberPagesTo == 0) {
+            numberPagesTo = getMinMaxNumberPages()[1];
+        }
+
+        if(search != null && !search.isEmpty()) {
+            search = "%" + search + "%";
+        }
+        else {
+            search = null;
+        }
+
+        Page<Book> result = this.bookRepository.Filters(authorsList, genreList, search, numberPagesFrom, numberPagesTo, pageable);
+        return result;
+    }
+
+    @Override
     public List<Book> getAllBooksByNumberPagesBetween(int from, int to) {
         return bookRepository.findAllByNumberPagesBetween(from, to);
     }
@@ -128,6 +193,14 @@ public class BookServiceImpl implements BookService {
         if(comment != null)
             book.setComment(comment);
         return bookRepository.save(book);
+    }
+
+    @Override
+    public int[] getMinMaxNumberPages() {
+        int min = bookRepository.minNumberPages();
+        int max = bookRepository.maxNumberPages();
+        int[] minMax = new int[]{ min, max};
+        return minMax;
     }
 
     private void checkUniqueId(Book book) {

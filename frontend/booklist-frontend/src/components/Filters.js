@@ -18,7 +18,8 @@ class Books extends Component {
             selectedGenres: [],
             selectedAuthorsIndexes: [],
             selectedMinPages: 0,
-            selectedMaxPages: 0
+            selectedMaxPages: 0,
+            search: ""
         }
     }
 
@@ -44,10 +45,9 @@ class Books extends Component {
                 console.log("error: " + error)
             });
 
-        axios.get("http://localhost:8080/api/books")
+        axios.get("http://localhost:8080/api/books/minMaxNumberPages")
             .then(response => {
-                const numPages = response.data.map(book => book.numberPages);
-                this.setState({minPages: Math.min.apply(Math, numPages), maxPages: Math.max.apply(Math, numPages)});
+                this.setState({minPages: response.data[0], maxPages: response.data[1]});
                 console.log(response);
             })
             .catch(error => {
@@ -69,10 +69,14 @@ class Books extends Component {
         this.setState({selectedAuthorsIndexes: indexes});
     };
 
+    onSearchChange = (e) => {
+        this.setState({search: e.target.value});
+    };
+
     render() {
         return (
-            <div className={"text-center justify-content-center"}
-                 style={{width: "100%"}}>
+            <div className={"text-center justify-content-center p-3"}
+                 style={{width: "100%", backgroundColor: "whitesmoke"}}>
                 <h5>Filters</h5>
                 <hr/>
                 <div className={"row text-center d-flex justify-content-center m-0"}>
@@ -84,7 +88,9 @@ class Books extends Component {
                         <input className="form-control form-control-sm ml-3 w-75"
                                type="text"
                                placeholder="Search"
-                               aria-label="Search"/>
+                               aria-label="Search"
+                               onChange={this.onSearchChange}
+                        />
                         </div>
                     </form>
                 </div>
@@ -123,7 +129,9 @@ class Books extends Component {
                 </div>
                 <hr/>
                 <button className={"btn btn-outline-secondary"}
-                        style={{width: "100%"}}>
+                        style={{width: "100%"}}
+                        onClick={()=>this.props.onFilter(this.state.selectedAuthorsIndexes, this.state.search, this.state.selectedMinPages, this.state.selectedMaxPages, this.state.selectedGenres)}
+                >
                     Filter
                 </button>
             </div>
