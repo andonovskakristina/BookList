@@ -18,6 +18,7 @@ class EditBook extends Component {
             numberPages: 0,
             imageUrl: "",
             genres: "",
+            description: "",
             oldState: {},
             authorOptions: [],
             genreOptions: [],
@@ -36,6 +37,7 @@ class EditBook extends Component {
                     numberPages: response.data.numberPages,
                     imageUrl: response.data.imageUrl,
                     genres: response.data.genres,
+                    description: response.data.description,
                     oldState: {
                         "ISBN": this.state.ISBN,
                         "title": response.data.title,
@@ -44,7 +46,8 @@ class EditBook extends Component {
                         "review": response.data.review,
                         "numberPages": response.data.numberPages,
                         "imageUrl": response.data.imageUrl,
-                        "genres": response.data.genres
+                        "genres": response.data.genres,
+                        "description": response.data.description
                     }
                 })
             });
@@ -196,7 +199,7 @@ class EditBook extends Component {
                         <textarea type={"text"} name={"description"} placeholder={"Book description"}
                                   className={"form-control my-2"} onChange={this.onInputChange}
                                   defaultValue={this.state.description} value={this.state.description}/>
-                        <div className={"text-left my-2"} style={{color: "#495057"}}>Publication Date
+                        <div className={"text-left my-2"} style={{color: "#495057"}}>Publication Date:
                             <DatePickerr
                                 name={"publicationDate"}
                                 onChange={this.onInputChange}

@@ -5,6 +5,9 @@ import {Link} from "react-router-dom";
 import Book from "./Book";
 import Filters from "./Filters";
 import {max} from "moment";
+import {Dropdown} from "react-bootstrap"
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 class Books extends Component {
     constructor(props) {
@@ -18,7 +21,8 @@ class Books extends Component {
             search: "",
             numberPagesFrom: 0,
             numberPagesTo: 0,
-            genres: []
+            genres: [],
+            sortBy: ""
         }
     }
 
@@ -30,7 +34,7 @@ class Books extends Component {
                   maxPages = this.state.numberPagesTo,
                   genres = this.state.genres
                   ) => {
-        axios.get(`http://localhost:8080/api/books?authorIds=${authors}&genres=${genres}&search=${search}&numberPagesFrom=${minPages}&numberPagesTo=${maxPages}&page=${page}&pageSize=${size}`)
+        axios.get(`http://localhost:8080/api/books?authorIds=${authors}&genres=${genres}&search=${search}&numberPagesFrom=${minPages}&numberPagesTo=${maxPages}&page=${page}&pageSize=${size}&sort=${this.state.sortBy}`)
             .then(response => {
                 console.log(response);
                 this.setState({ List: response.data.content,
@@ -68,6 +72,13 @@ class Books extends Component {
         });
     };
 
+    sortBy = (e) => {
+        this.setState({sortBy: e.target.name},
+            function() {
+            this.fetchBooks(0)
+            });
+    };
+
     markAsRead = (bookISBN) => {
         axios.patch(`http://localhost:8080/api/books/${bookISBN}/markAsRead`)
             .then(response => {
@@ -93,11 +104,12 @@ class Books extends Component {
                        previousClassName={'page-item'}
                        nextClassName={'page-item'}
                        previousLinkClassName={'page-link btn'}
-                       nextLinkClassName={'page-link btn'}
+                       nextLinkClassName={'page-link btn btn-outline-secondary'}
                        forcePage={this.state.page}
                        onPageChange={this.handlePageClick}
                        containerClassName={'pagination justify-content-center'}
                        activeClassName={'active'}
+                       activeLinkClassName={'active bg-secondary border-secondary'}
                        disabledClassName={"disabled"}
         />;
 
@@ -124,22 +136,65 @@ class Books extends Component {
                     <Filters onFilter={this.onFilter}/>
                 </div>
                 <div className={"col-md-9"}>
-                <div className="row m-0 p-3" style={{backgroundColor: "whitesmoke"}}>
-                    <div className={"text-right"} style={{flex: "auto"}}>
-                        <Link to={"/books/new"}>
-                            <button className="btn btn-outline-secondary">
-                                <span><strong>Add new book</strong></span>
-                            </button>
-                        </Link>
-                    </div>
+                <div className="row m-0 mb-3 p-3" style={{backgroundColor: "whitesmoke"}}>
+
                     {this.state.List.length > 0 ?
-                        <div style={{width: "100%"}}>
-                            {newList}
-                            {this.renderPaginate()}
+                        <div className={"text-right"} style={{flex: "auto"}}>
+                            <ButtonToolbar style={{display: "inline-block"}}
+                                           className={"mx-2"}>
+                                {['Secondary'].map(
+                                    variant => (
+                                        <DropdownButton
+                                            title="Sort Books By"
+                                            variant={variant.toLowerCase()}
+                                            id={`dropdown-variants-${variant}`}
+                                            key={variant}
+                                        >
+                                            <Dropdown.Item href=""
+                                                           name={"review"}
+                                                           onClick={this.sortBy}>
+                                                Review
+                                            </Dropdown.Item>
+                                            <Dropdown.Item href=""
+                                                           name={"numberPages"}
+                                                           onClick={this.sortBy}>
+                                                Number of Pages
+                                            </Dropdown.Item>
+                                            <Dropdown.Item href=""
+                                                           name={"publicationDate"}
+                                                           onClick={this.sortBy}>
+                                                Publication Date
+                                            </Dropdown.Item>
+                                        </DropdownButton>
+                                    ),
+                                )}
+                            </ButtonToolbar>
+                            <Link to={"/books/new"}>
+                                <button className="btn btn-outline-secondary">
+                                    <span><strong>Add new book</strong></span>
+                                </button>
+                            </Link>
+                            <div style={{width: "100%"}}>
+                                {newList}
+                                <div className={"mt-4"}>
+                                {this.renderPaginate()}
+                                </div>
+                            </div>
                         </div>
+
                         :
-                        <div className={"row"}>
-                            <h3> The List of Books is empty</h3>
+                        <div className={"row text-center m-2 justify-content-center"} style={{flex: "auto", width: "90%"}}>
+                            <div className={"row"} style={{display: "block"}}>
+                                <h3> The List of Books is empty</h3>
+                            </div>
+                            <br/>
+                            <div className={"row text-right"} style={{display: "block", flex: "auto"}}>
+                                <Link to={"/books/new"}>
+                                    <button className="btn btn-outline-secondary">
+                                        <span><strong>Add new book</strong></span>
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
                     }
 

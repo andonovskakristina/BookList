@@ -54,6 +54,10 @@ public class Book {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Genre> genres;
 
+    public int getAuthorId() {
+        return author.getId();
+    }
+
     public String getAuthorName() {
         return author.getName();
     }

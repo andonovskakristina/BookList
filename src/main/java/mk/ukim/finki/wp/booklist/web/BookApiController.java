@@ -109,7 +109,7 @@ public class BookApiController {
                                   @RequestParam(value = "search", required = false) String search,
                                   @RequestParam(value = "numberPagesFrom", required = false, defaultValue = "0") int numberPagesFrom,
                                   @RequestParam(value = "numberPagesTo", required = false, defaultValue = "0") int numberPagesTo,
-                                  @PageableDefault(page = 0, size = 3) Pageable pageable){
+                                  @PageableDefault(page = 0, size = 3, sort = {"title"}) Pageable pageable){
         return bookService.getAllBooksByPageAndFilters(authorIds, genres, search, numberPagesFrom, numberPagesTo, pageable);
 
     }

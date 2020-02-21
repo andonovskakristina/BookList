@@ -93,7 +93,7 @@ public class BookServiceImpl implements BookService {
 
         if((AuthorIds == null || AuthorIds.length == 0) &&
                 (genres == null || genres.length == 0) &&
-                search == null || search.isEmpty() &&
+                (search == null || search.isEmpty()) &&
                 numberPagesFrom == 0 &&
                 numberPagesTo == 0) {
             return bookRepository.findAll(pageable);

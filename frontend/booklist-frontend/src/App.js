@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom
 import Books from "./components/Books";
 import CreateNewBook from "./components/CreateNewBook";
 import EditBook from "./components/EditBook";
+import BookDetails from "./components/BookDetails";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Header/>
             <Switch>
                 <Route path={"/books/:ISBN/edit"} component={EditBook}/>
+                <Route path={"/books/:ISBN/details"} component={BookDetails}/>
                 <Route path={"/books"} exact component={Books}/>
                 <Route path={"/books/new"} component={CreateNewBook}/>
             </Switch>
