@@ -1,13 +1,11 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
-import $ from "jquery"
 import backgroundImage from "../images/createNewBackground.jpg"
 import MultipleSelect from "./MultipleSelect";
 import css from "../css/createNewBook.css"
 import DatePickerr from "./DatePicker";
 import SingleSelect from "./SingleSelect";
-import DatePicker from "react-datepicker/es";
 
 class CreateNewBook extends Component{
     constructor(props) {

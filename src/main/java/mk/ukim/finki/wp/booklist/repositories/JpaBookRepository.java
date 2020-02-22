@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface JpaBookRepository extends JpaRepository<Book, String> {
-    List<Book> findAllByReadIsTrue();
+    Page<Book> findAllByReadIsTrue(Pageable pageable);
 
     List<Book> findAllByFavouriteIsTrue();
 
@@ -50,12 +50,15 @@ public interface JpaBookRepository extends JpaRepository<Book, String> {
             "AND a IN :authors " +
             "AND b.numberPages BETWEEN :numberPagesFrom AND :numberPagesTo " +
             "AND ((:genres) IS NULL " +
-            "OR g.name IN (:genres))")
+            "OR g.name IN (:genres)) " +
+            "AND (:read = false " +
+            "OR b.read = true)")
     Page<Book> Filters(
             @Param("authors") List<Author> authors,
             @Param("genres") List<String> genres,
             @Param("search") String search,
             @Param("numberPagesFrom") int minNumber,
             @Param("numberPagesTo") int maxNumber,
+            @Param("read") boolean read,
             Pageable pageable);
 }

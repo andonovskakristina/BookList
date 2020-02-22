@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 
 class BookCarousel extends Component {
@@ -47,12 +46,13 @@ class BookCarousel extends Component {
         var newList = [];
         if(this.state.randomBooks.length > 0) {
             newList = this.state.randomBooks.map(book =>
-                <Carousel.Item key={book.ISBN}>
+                <Carousel.Item key={book.isbn}>
                     <img
                         className="d-block w-100"
                         src={book.imageUrl}
                         alt={book.title}
-                        style={{width: "180px", height: "250px", maxHeight: "250px", maxWidth: "180px"}}
+                        style={{width: "180px", height: "250px",
+                            maxHeight: "250px", maxWidth: "180px", cursor: "pointer"}}
                         onClick={() =>{
                             window.location = `/books/${book.isbn}/details`;
                         }}

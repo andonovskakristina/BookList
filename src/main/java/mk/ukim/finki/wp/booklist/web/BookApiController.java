@@ -102,26 +102,24 @@ public class BookApiController {
     }
 
     @GetMapping()
-    public Page<Book> getAllBooks(@RequestParam(value = "authorIds", required = false) int[] authorIds,
-                                  @RequestParam(value = "genres", required = false) String[] genres,
-                                  @RequestParam(value = "search", required = false) String search,
-                                  @RequestParam(value = "numberPagesFrom", required = false, defaultValue = "0") int numberPagesFrom,
-                                  @RequestParam(value = "numberPagesTo", required = false, defaultValue = "0") int numberPagesTo,
+    public Page<Book> getAllBooks(@RequestParam(value = "authorIds",
+                                            required = false) int[] authorIds,
+                                  @RequestParam(value = "genres",
+                                          required = false) String[] genres,
+                                  @RequestParam(value = "search",
+                                          required = false) String search,
+                                  @RequestParam(value = "numberPagesFrom",
+                                          required = false,
+                                          defaultValue = "0") int numberPagesFrom,
+                                  @RequestParam(value = "numberPagesTo",
+                                          required = false,
+                                          defaultValue = "0") int numberPagesTo,
+                                  @RequestParam(value = "read",
+                                          required = false, defaultValue = "false")
+                                              boolean read,
                                   @PageableDefault(page = 0, size = 3, sort = {"title"}) Pageable pageable){
-        return bookService.getAllBooksByPageAndFilters(authorIds, genres, search, numberPagesFrom, numberPagesTo, pageable);
+        return bookService.getAllBooksByPageAndFilters(authorIds, genres, search, numberPagesFrom, numberPagesTo, read, pageable);
 
-    }
-
-
-
-    @GetMapping("/read")
-    public List<Book> getAllReadBooks(){
-        return bookService.getAllReadBooks();
-    }
-
-    @GetMapping("/favourite")
-    public List<Book> getAllFavouriteBooks(){
-        return bookService.getAllFavouriteBooks();
     }
 
     @GetMapping("/minMaxNumberPages")

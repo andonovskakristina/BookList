@@ -23,10 +23,6 @@ public interface BookService {
 
     List<Book> getBooksWithPagesLessThan(int numberPages);
 
-    List<Book> getAllReadBooks();
-
-    List<Book> getAllFavouriteBooks();
-
     Page<Book> getAllBooksByPage(int page, int size);
 
     List<Book> getAllBooksByNumberPagesBetween(int from, int to);
@@ -39,5 +35,5 @@ public interface BookService {
 
     int[] getMinMaxNumberPages();
 
-    Page<Book> getAllBooksByPageAndFilters(int[] AuthorIds, String[] genres, String search, int numberPagesFrom, int numberPagesTo, Pageable pageable);
+    Page<Book> getAllBooksByPageAndFilters(int[] AuthorIds, String[] genres, String search, int numberPagesFrom, int numberPagesTo, boolean read, Pageable pageable);
 }

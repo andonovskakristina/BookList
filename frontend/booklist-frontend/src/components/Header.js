@@ -22,7 +22,7 @@ function Header(){
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={"nav-link"} to="/books">
+                            <Link className={"nav-link"} to="/books" read={false}>
                                 <a className="nav-link">Books</a>
                             </Link>
                         </li>

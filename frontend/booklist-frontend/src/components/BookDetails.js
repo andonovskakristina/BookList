@@ -193,16 +193,18 @@ class BookDetails extends Component{
                     </div>
                     <div className={"col-md-3 d-flex justify-content-end"}>
                         <div style={{width: "90%"}}>
-                            <div className={"row text-left"}>
+                            <div className={"row text-center"}>
                                 <h5>Genres</h5>
                                 <table className={"table"}
                                        style={{borderTop: "1px solid darkgray", borderBottom: "1px solid darkgray"}}>
                                     {tableGenres}
                                 </table>
                             </div>
-                            <div className={"row d-flex justify-content-center"}>
+                            <div className={"row d-flex justify-content-start"}>
+                                <h5>You may also like</h5>
+                                <hr style={{border: "1px solid darkgray"}}/>
                                 <div style={{width: "180px"}}>
-                                <BookCarousel ISBN={this.state.ISBN}/>
+                                    <BookCarousel ISBN={this.state.ISBN}/>
                                 </div>
                             </div>
                         </div>

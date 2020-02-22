@@ -6,6 +6,7 @@ import Books from "./components/Books";
 import CreateNewBook from "./components/CreateNewBook";
 import EditBook from "./components/EditBook";
 import BookDetails from "./components/BookDetails";
+import ReadBooks from "./components/ReadBooks";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
             <Switch>
                 <Route path={"/books/:ISBN/edit"} component={EditBook}/>
                 <Route path={"/books/:ISBN/details"} component={BookDetails}/>
-                <Route path={"/books"} exact component={Books}/>
+                <Route path={"/books"} exact component={() => <Books read={false} />}/>
+                <Route path={"/books/read"} exact component={ReadBooks}/>
                 <Route path={"/books/new"} component={CreateNewBook}/>
             </Switch>
         </Router>
