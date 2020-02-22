@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import BookCarousel from "./BookCarousel";
 
 class BookDetails extends Component{
     constructor(props) {
@@ -39,28 +40,81 @@ class BookDetails extends Component{
                 comment: response.data.comment
             });
                 this.stars();
+                this.buttons();
             });
     }
+
+    markAsRead = () => {
+        if(this.state.read && this.state.favourite) {
+            this.markAsFavourite();
+        }
+        axios.patch(`http://localhost:8080/api/books/${this.state.ISBN}/markAsRead`)
+            .then(response => {
+                console.log(response);
+                this.setState({read: response.data.read, favourite: response.data.favourite});
+                this.buttons();
+            })
+            .catch(error => console.log(error.response))
+    };
+
+    markAsFavourite = () => {
+        axios.patch(`http://localhost:8080/api/books/${this.state.ISBN}/updateFavourites`)
+            .then(response => {
+                console.log(response);
+                this.setState({favourite: response.data.favourite});
+                this.buttons();
+            })
+            .catch(error => console.log(error.response))
+    };
 
     stars = () => {
         var count = 0;
         for (var i = 0; i < parseInt(this.state.review); i++) {
-            document.getElementById("stars").innerHTML += "<span class=\"fa fa-star text-warning\"></span>";
+            document.getElementById("stars").innerHTML +=
+                "<span class=\"fa fa-star text-warning\"></span>";
             count++;
         }
 
         if(count !== 5) {
             if(this.state.review - parseInt(this.state.review) >= 0.5) {
-                document.getElementById("stars").innerHTML += "<span class=\"fa fa-star-half-empty text-warning\"></span>";
+                document.getElementById("stars").innerHTML +=
+                    "<span class=\"fa fa-star-half-empty text-warning\"></span>";
                 count++;
             }
         }
 
         for(var i = count; i < 5; i++){
-            document.getElementById("stars").innerHTML += "<span class=\"fa fa-star text-secondary\"></span>";
+            document.getElementById("stars").innerHTML +=
+                "<span class=\"fa fa-star text-secondary\"></span>";
         }
 
-        document.getElementById("stars").innerHTML += " " + "<small>" + this.state.review + "</small>";
+        document.getElementById("stars").innerHTML +=
+            " " + "<small>" + this.state.review + "</small>";
+    };
+
+    buttons = () => {
+        var btnRead = document.getElementById("btnRead");
+        var btnReadText = document.getElementById("btnReadText");
+        var btnFave = document.getElementById("btnFave");
+        var btnFaveText = document.getElementById("btnFaveText");
+        if(this.state.read) {
+            btnRead.title = "Not Read";
+            btnReadText.innerText = " Not Read";
+            btnFave.hidden = false;
+            if(this.state.favourite) {
+                btnFave.title = "Not Favourite";
+                btnFaveText.innerText = " Not Favourite";
+            }
+            else {
+                btnFave.title = "Mark As Favourite";
+                btnFaveText.innerText = " Favourite";
+            }
+        }
+        else {
+            btnRead.title = "Mark As Read";
+            btnReadText.innerText = " Read";
+            btnFave.hidden = true;
+        }
     };
 
     render() {
@@ -68,8 +122,12 @@ class BookDetails extends Component{
         var pom = this.state.genres.split(",");
         var tableGenres = [];
         for(var i = 0; i < pom.length; i++) {
-            tableGenres[i] = <tr className={"d-flex align-items-center pl-2"} style={{borderTop: "1px solid darkgray", maxHeight: "40px", height: "40px"}} >{pom[i]}</tr>;
+            tableGenres[i] = <tr className={"d-flex align-items-center pl-2"}
+                                 style={{borderTop: "1px solid darkgray", maxHeight: "40px", height: "40px"}} >
+                {pom[i]}
+            </tr>;
         }
+
         return(
             <div className={"container mt-4"}>
                 <div className={"row"}>
@@ -84,7 +142,26 @@ class BookDetails extends Component{
                                 <div id={"stars"} className={"text-center"}>
                                 </div>
                             </div>
-
+                            <div className={"row justify-content-center"}>
+                            <button className="btn btn-sm btn-outline-dark mt-2"
+                                    title={"Mark As Read"}
+                                    id={"btnRead"}
+                                    value={this.state.read}
+                                    onClick={e => { this.markAsRead()}}>
+                                <span className="fa fa-book"/>
+                                <span><strong id={"btnReadText"}> Read</strong></span>
+                            </button>
+                            </div>
+                            <div className={"row justify-content-center"}>
+                            <button className="btn btn-sm btn-outline-dark mt-2"
+                                    title={"Mark As Favourite"}
+                                    id={"btnFave"}
+                                    value={this.state.favourite}
+                                    onClick={e => { this.markAsFavourite()}}>
+                                <span className="fa fa-heart"/>
+                                <span><strong id={"btnFaveText"}> Favourite</strong></span>
+                            </button>
+                            </div>
                         </div>
                     </div>
                     <div className={"col-md-6 text-left"}>
@@ -116,13 +193,18 @@ class BookDetails extends Component{
                     </div>
                     <div className={"col-md-3 d-flex justify-content-end"}>
                         <div style={{width: "90%"}}>
-                        <div className={"row text-left"}>
-                            <h5>Genres</h5>
-                            <table className={"table"}
-                                   style={{borderTop: "1px solid darkgray", borderBottom: "1px solid darkgray"}}>
-                                {tableGenres}
-                            </table>
-                        </div>
+                            <div className={"row text-left"}>
+                                <h5>Genres</h5>
+                                <table className={"table"}
+                                       style={{borderTop: "1px solid darkgray", borderBottom: "1px solid darkgray"}}>
+                                    {tableGenres}
+                                </table>
+                            </div>
+                            <div className={"row d-flex justify-content-center"}>
+                                <div style={{width: "180px"}}>
+                                <BookCarousel ISBN={this.state.ISBN}/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

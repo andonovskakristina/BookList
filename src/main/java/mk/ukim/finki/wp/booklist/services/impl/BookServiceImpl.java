@@ -155,8 +155,11 @@ public class BookServiceImpl implements BookService {
         Optional<Book> optionalEntity = bookRepository.findById(id);
         Book book = optionalEntity.get();
 
-        if(book.isRead())
+        if(book.isRead()) {
+            if(book.isFavourite())
+                book.setFavourite(false);
             book.setRead(false);
+        }
         else
             book.setRead(true);
         return bookRepository.save(book);
