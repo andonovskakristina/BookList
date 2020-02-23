@@ -79,13 +79,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<Book> getAllBooksByPageAndFilters(int[] AuthorIds, String[] genres, String search, int numberPagesFrom, int numberPagesTo, boolean read, Pageable pageable){
+    public Page<Book> getAllBooksByPageAndFilters(int[] AuthorIds, String[] genres, String search, int numberPagesFrom, int numberPagesTo, boolean read, boolean favourite, Pageable pageable){
 
         if((AuthorIds == null || AuthorIds.length == 0) &&
                 (genres == null || genres.length == 0) &&
                 (search == null || search.isEmpty()) &&
                 numberPagesFrom == 0 &&
                 numberPagesTo == 0) {
+            if(favourite)
+                return bookRepository.findAllByFavouriteIsTrue(pageable);
             if(read)
                 return bookRepository.findAllByReadIsTrue(pageable);
             return bookRepository.findAll(pageable);
@@ -131,7 +133,7 @@ public class BookServiceImpl implements BookService {
             search = null;
         }
 
-        Page<Book> result = this.bookRepository.Filters(authorsList, genreList, search, numberPagesFrom, numberPagesTo, read, pageable);
+        Page<Book> result = this.bookRepository.Filters(authorsList, genreList, search, numberPagesFrom, numberPagesTo, read, favourite, pageable);
         return result;
     }
 

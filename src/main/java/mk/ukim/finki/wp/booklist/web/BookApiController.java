@@ -117,8 +117,11 @@ public class BookApiController {
                                   @RequestParam(value = "read",
                                           required = false, defaultValue = "false")
                                               boolean read,
+                                  @RequestParam(value = "favourite",
+                                          required = false, defaultValue = "false")
+                                              boolean favourite,
                                   @PageableDefault(page = 0, size = 3, sort = {"title"}) Pageable pageable){
-        return bookService.getAllBooksByPageAndFilters(authorIds, genres, search, numberPagesFrom, numberPagesTo, read, pageable);
+        return bookService.getAllBooksByPageAndFilters(authorIds, genres, search, numberPagesFrom, numberPagesTo, read, favourite, pageable);
 
     }
 

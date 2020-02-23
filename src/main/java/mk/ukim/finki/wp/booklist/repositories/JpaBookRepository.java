@@ -16,7 +16,7 @@ import java.util.List;
 public interface JpaBookRepository extends JpaRepository<Book, String> {
     Page<Book> findAllByReadIsTrue(Pageable pageable);
 
-    List<Book> findAllByFavouriteIsTrue();
+    Page<Book> findAllByFavouriteIsTrue(Pageable pageable);
 
     @Query("SELECT b FROM Book b WHERE b.numberPages < :numberPages")
     List<Book> findAllWithLessPagesThan(@Param("numberPages") int numberPages);
@@ -52,7 +52,9 @@ public interface JpaBookRepository extends JpaRepository<Book, String> {
             "AND ((:genres) IS NULL " +
             "OR g.name IN (:genres)) " +
             "AND (:read = false " +
-            "OR b.read = true)")
+            "OR b.read = true) " +
+            "AND (:favourite = false " +
+            "OR b.favourite = true)")
     Page<Book> Filters(
             @Param("authors") List<Author> authors,
             @Param("genres") List<String> genres,
@@ -60,5 +62,6 @@ public interface JpaBookRepository extends JpaRepository<Book, String> {
             @Param("numberPagesFrom") int minNumber,
             @Param("numberPagesTo") int maxNumber,
             @Param("read") boolean read,
+            @Param("favourite") boolean favourite,
             Pageable pageable);
 }

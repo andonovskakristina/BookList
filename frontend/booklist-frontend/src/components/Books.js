@@ -22,7 +22,8 @@ class Books extends Component {
             numberPagesTo: 0,
             genres: [],
             sortBy: "",
-            read: props.read
+            read: props.read,
+            favourite: props.favourite
         }
     }
 
@@ -33,9 +34,10 @@ class Books extends Component {
                   minPages = this.state.numberPagesFrom,
                   maxPages = this.state.numberPagesTo,
                   genres = this.state.genres,
-                  read = this.state.read
+                  read = this.state.read,
+                  favourite = this.state.favourite
                   ) => {
-        axios.get(`http://localhost:8080/api/books?authorIds=${authors}&genres=${genres}&search=${search}&numberPagesFrom=${minPages}&numberPagesTo=${maxPages}&read=${read}&page=${page}&pageSize=${size}&sort=${this.state.sortBy}`)
+        axios.get(`http://localhost:8080/api/books?authorIds=${authors}&genres=${genres}&search=${search}&numberPagesFrom=${minPages}&numberPagesTo=${maxPages}&read=${read}&favourite=${favourite}&page=${page}&pageSize=${size}&sort=${this.state.sortBy}`)
             .then(response => {
                 console.log(response);
                 this.setState({ List: response.data.content,
@@ -140,6 +142,7 @@ class Books extends Component {
                   markAsRead={this.markAsRead}
                   markAsFavourite={this.markAsFavourite}
                   isReadPage={this.state.read}
+                  isFavePage={this.state.favourite}
             />);
         return (
             <div className="container mt-4">
@@ -153,7 +156,7 @@ class Books extends Component {
                     {this.state.List.length > 0 ?
                         <div className={"text-right"} style={{flex: "auto"}}>
                             <ButtonToolbar style={{display: "inline-block"}}
-                                           className={"mx-2"}>
+                                           className={""}>
                                 {['Secondary'].map(
                                     variant => (
                                         <DropdownButton
@@ -182,8 +185,8 @@ class Books extends Component {
                                 )}
                             </ButtonToolbar>
                             <Link to={"/books/new"}>
-                                <button className="btn btn-outline-secondary"
-                                hidden={this.state.read}>
+                                <button className="btn btn-outline-secondary ml-2"
+                                hidden={this.state.read || this.state.favourite}>
                                     <span><strong>Add new book</strong></span>
                                 </button>
                             </Link>

@@ -35,5 +35,5 @@ public interface BookService {
 
     int[] getMinMaxNumberPages();
 
-    Page<Book> getAllBooksByPageAndFilters(int[] AuthorIds, String[] genres, String search, int numberPagesFrom, int numberPagesTo, boolean read, Pageable pageable);
+    Page<Book> getAllBooksByPageAndFilters(int[] AuthorIds, String[] genres, String search, int numberPagesFrom, int numberPagesTo, boolean read, boolean favourite, Pageable pageable);
 }

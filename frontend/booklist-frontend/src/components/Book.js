@@ -15,37 +15,34 @@ class Book extends Component{
             favourite: props.favourite,
             genres: props.genres,
             imageUrl: props.imageUrl,
-            isReadPage: props.isReadPage
+            isReadPage: props.isReadPage,
+            isFavePage: props.isFavePage
+        }
+    }
+
+    onDocumentReady() {
+        var btnFave = document.getElementById("btnFave");
+        var btnFaveText = document.getElementById("btnFaveText");
+        if(this.state.favourite) {
+            btnFave.title = "Not Favourite";
+            btnFaveText.innerHTML += <span><strong id={"btnFaveText"}>" Not Favourite"</strong></span>;
+        }
+        else {
+            btnFave.title = "Mark As Favourite";
+            btnFaveText.innerHTML += <span><strong id={"btnFaveText"}>" Favourite"</strong></span>;
         }
     }
 
     markAsFavourite = () => {
-        var btnFave = document.getElementById("btnFave");
-        var btnFaveText = document.getElementById("btnFaveText");
-        if(btnFave.title === "Mark As Favourite") {
-            btnFave.title = "Not Favourite";
-            btnFaveText.innerText = " Not Favourite";
-        }
-        else {
-            btnFave.title = "Mark As Favourite";
-            btnFaveText.innerText = " Favourite";
-        }
+        this.setState({favourite: !this.state.favourite})
     };
 
     markAsRead() {
-        var btnRead = document.getElementById("btnRead");
-        var btnReadText = document.getElementById("btnReadText");
-        if(btnRead.title === "Mark As Read") {
-            btnRead.title = "Not Read";
-            btnReadText.innerText = " Not Read";
-        }
-        else {
-            btnRead.title = "Mark As Read";
-            btnReadText.innerText = " Read";
-        }
+        this.setState({read: !this.state.read})
     };
 
     render() {
+
         return(
             <div className={"container"}>
                 <div className={"row my-2 text-left pl-0"}
@@ -83,24 +80,35 @@ class Book extends Component{
                             </Link><br/>
                             {this.state.read !== true ?
                                 <button className="btn btn-sm btn-outline-dark mt-2"
-                                        title={"Mark As Read"} id={"btnRead"} value={this.state.read}
-                                        onClick={e => { this.markAsRead(); this.props.markAsRead(this.state.ISBN)}}>
+                                        title={"Mark As Read"}
+                                        id={"btnRead"}
+                                        value={this.state.read}
+                                        onClick={e => { this.markAsRead();
+                                        this.props.markAsRead(this.state.ISBN)}}>
                                     <span className="fa fa-book"/>
                                     <span><strong id={"btnReadText"}> Read</strong></span>
                                 </button>
                                 :
                                 <div>
-                                    <span id={"spanRead"} hidden={this.state.isReadPage}> You read this book.</span>
+                                    <span id={"spanRead"} hidden={this.state.isReadPage ||
+                                    this.state.isFavePage}> You read this book.</span>
                                     <button className="btn btn-sm btn-outline-dark mt-2"
-                                            title={"Mark As Favourite"}
                                             id={"btnFave"}
+                                            title={this.state.favourite ? "Not Fave" : "Fave"}
                                             value={this.state.favourite}
                                             onClick={e => { this.props.markAsFavourite(this.state.ISBN);
                                                 this.markAsFavourite()}}
-                                            hidden={!this.state.isReadPage}>
+                                            hidden={!this.state.isReadPage && !this.state.isFavePage}>
                                         <span className="fa fa-heart"/>
-                                        <span><strong id={"btnFaveText"}> Favourite</strong></span>
+                                        <span>
+                                            {this.state.favourite ?
+                                                <strong id={"btnFaveText"}> Not Favourite</strong>
+                                                :
+                                                <strong id={"btnFaveText"}> Favourite</strong>
+                                            }
+                                        </span>
                                     </button>
+
                                 </div>
                             }
 
