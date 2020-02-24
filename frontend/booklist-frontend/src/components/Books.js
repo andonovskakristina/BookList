@@ -50,7 +50,6 @@ class Books extends Component {
     };
 
     componentDidMount() {
-        console.log(this.state.read)
         this.fetchBooks(0);
     }
 

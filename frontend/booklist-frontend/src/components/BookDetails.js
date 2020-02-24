@@ -136,10 +136,12 @@ class BookDetails extends Component{
                              className={"text-center"}>
                             <div className={"row m-auto"}
                                  style={{width: "90%"}}>
-                                <img src={this.state.imageUrl} style={{height: "300px", width: "200px"}}/>
+                                <img src={this.state.imageUrl}
+                                     style={{height: "300px", width: "200px"}}/>
                             </div>
                             <div className={"row justify-content-center"}>
-                                <div id={"stars"} className={"text-center"}>
+                                <div id={"stars"}
+                                     className={"text-center"}>
                                 </div>
                             </div>
                             <div className={"row justify-content-center"}>
@@ -169,7 +171,8 @@ class BookDetails extends Component{
                             <h4 style={{display: "block"}}>{this.state.title}</h4>
                         </div>
                         <div className={"row"}>
-                            <Link to={`/authors/${this.state.authorId}/details`} className="text-dark">
+                            <Link to={`/authors/${this.state.authorId}/details`}
+                                  className="text-dark">
                                 <h6>{this.state.authorName}</h6>
                             </Link>
                         </div>
@@ -196,7 +199,8 @@ class BookDetails extends Component{
                             <div className={"row text-center"}>
                                 <h5>Genres</h5>
                                 <table className={"table"}
-                                       style={{borderTop: "1px solid darkgray", borderBottom: "1px solid darkgray"}}>
+                                       style={{borderTop: "1px solid darkgray",
+                                           borderBottom: "1px solid darkgray"}}>
                                     {tableGenres}
                                 </table>
                             </div>

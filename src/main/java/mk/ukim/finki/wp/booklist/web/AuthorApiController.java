@@ -5,6 +5,9 @@ import mk.ukim.finki.wp.booklist.models.Book;
 import mk.ukim.finki.wp.booklist.services.AuthorService;
 import mk.ukim.finki.wp.booklist.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -61,8 +64,10 @@ public class AuthorApiController {
     }
 
     @GetMapping()
-    public List<Author> getAllAuthors(){
-        return authorService.getAllAuthors();
+    public Page<Author> getAllAuthors(@RequestParam(value = "search",
+                                                    required = false) String search,
+                                      @PageableDefault(page = 0, size = 6) Pageable pageable){
+        return authorService.getAllAuthorsByPageAndSearch(search, pageable);
     }
 
     @GetMapping("/{id}")

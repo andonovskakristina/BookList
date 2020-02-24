@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {BrowserRouter as Router, Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import axios from "axios";
 import backgroundImage from "../images/createNewBackground.jpg";
 import SingleSelect from "./SingleSelect";
@@ -54,8 +54,8 @@ class EditBook extends Component {
 
         axios.get("http://localhost:8080/api/authors")
             .then(response => {
-                this.setState({authorOptions: response.data.map(author => author.name)});
-                this.setState({authorOptionsIndexes: response.data.map(author => author.id)});
+                this.setState({authorOptions: response.data.content.map(author => author.name)});
+                this.setState({authorOptionsIndexes: response.data.content.map(author => author.id)});
                 console.log("response: " + response);
             })
             .catch(error => {
@@ -179,34 +179,66 @@ class EditBook extends Component {
                 }}>
                     <h4>Edit Book</h4>
                     <hr style={{border: "0.5px solid darkgray", padding: 0}}/>
-                    <form className={"m-auto"} style={{width: "90%"}} onSubmit={this.onFormSubmit}>
-                        <input type={"text"} name={"title"} placeholder={"Book title"} className={"form-control my-2"}
-                               onChange={this.onInputChange} defaultValue={this.state.title} value={this.state.title}/>
-                        <SingleSelect name={"authorName"} value={""} authorOptions={this.state.authorOptions}
+                    <form className={"m-auto"}
+                          style={{width: "90%"}}
+                          onSubmit={this.onFormSubmit}>
+                        <input type={"text"}
+                               name={"title"}
+                               placeholder={"Book title"}
+                               className={"form-control my-2"}
+                               onChange={this.onInputChange}
+                               defaultValue={this.state.title}
+                               value={this.state.title}/>
+                        <SingleSelect name={"authorName"}
+                                      value={""}
+                                      authorOptions={this.state.authorOptions}
                                       authorOptionsIndexes={this.state.authorOptionsIndexes}
                                       onAuthorChange={this.onAuthorChange}/>
-                        <MultipleSelect name={"genres"} genreOptions={this.state.genreOptions}
+                        <MultipleSelect name={"genres"}
+                                        genreOptions={this.state.genreOptions}
                                         onGenreChange={this.onGenreChange}/>
-                        <input type={"number"} name={"numberPages"} pattern="[0-9]*" placeholder={"Number of Pages"}
-                               className={"form-control my-2"} onChange={this.onInputChange}
-                               defaultValue={this.state.numberPages} value={this.state.numberPages}/>
-                        <input type={"number"} step={".01"} max={"5.00"} name={"review"} placeholder={"Book review"}
-                               className={"form-control my-2"} onChange={this.onInputChange}
-                               defaultValue={this.state.review} value={this.state.review}/>
-                        <input type={"text"} name={"imageUrl"} placeholder={"Image Url"} className={"form-control my-2"}
-                               onChange={this.onInputChange} defaultValue={this.state.imageUrl}
+                        <input type={"number"}
+                               name={"numberPages"}
+                               pattern="[0-9]*"
+                               placeholder={"Number of Pages"}
+                               className={"form-control my-2"}
+                               onChange={this.onInputChange}
+                               defaultValue={this.state.numberPages}
+                               value={this.state.numberPages}/>
+                        <input type={"number"}
+                               step={".01"}
+                               max={"5.00"}
+                               name={"review"}
+                               placeholder={"Book review"}
+                               className={"form-control my-2"}
+                               onChange={this.onInputChange}
+                               defaultValue={this.state.review}
+                               value={this.state.review}/>
+                        <input type={"text"}
+                               name={"imageUrl"}
+                               placeholder={"Image Url"}
+                               className={"form-control my-2"}
+                               onChange={this.onInputChange}
+                               defaultValue={this.state.imageUrl}
                                value={this.state.imageUrl}/>
-                        <textarea type={"text"} name={"description"} placeholder={"Book description"}
-                                  className={"form-control my-2"} onChange={this.onInputChange}
-                                  defaultValue={this.state.description} value={this.state.description}/>
-                        <div className={"text-left my-2"} style={{color: "#495057"}}>Publication Date:
+                        <textarea type={"text"}
+                                  name={"description"}
+                                  placeholder={"Book description"}
+                                  className={"form-control my-2"}
+                                  onChange={this.onInputChange}
+                                  defaultValue={this.state.description}
+                                  value={this.state.description}/>
+                        <div className={"text-left my-2"}
+                             style={{color: "#495057"}}>Publication Date:
                             <DatePickerr
                                 name={"publicationDate"}
                                 onChange={this.onInputChange}
                                 onDateChange={this.onDateChange}
                             />
                         </div>
-                        <h6 className={"text-danger text-left"} hidden={true} id={"errorMessage"}>All Fields Are
+                        <h6 className={"text-danger text-left"}
+                            hidden={true}
+                            id={"errorMessage"}>All Fields Are
                             Required!</h6>
 
                         <div className={"row m-0 mt-3 justify-content-end"}>
@@ -217,7 +249,8 @@ class EditBook extends Component {
                                 Save
                             </button>
 
-                            <button type="button" onClick={this.onReset}
+                            <button type="button"
+                                    onClick={this.onReset}
                                     className="btn btn-warning text-upper m-2">
                                 Reset
                             </button>

@@ -35,8 +35,8 @@ class Books extends Component {
 
         axios.get("http://localhost:8080/api/authors")
             .then(response => {
-                this.setState({authorOptions: response.data.map(author => author.name)});
-                this.setState({authorOptionsIndexes: response.data.map(author => author.id)});
+                this.setState({authorOptions: response.data.content.map(author => author.name)});
+                this.setState({authorOptionsIndexes: response.data.content.map(author => author.id)});
                 console.log("response: " + response);
             })
             .catch(error => {

@@ -5,6 +5,8 @@ import mk.ukim.finki.wp.booklist.models.exceptions.ApiException;
 import mk.ukim.finki.wp.booklist.repositories.JpaAuthorRepository;
 import mk.ukim.finki.wp.booklist.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +29,11 @@ public class AuthorServiceImpl implements AuthorService {
             throw new ApiException("Author doesn't exist");
         Optional<Author> optionalEntity = this.authorRepository.findById(id);
         Author old = optionalEntity.get();
+        if(author.getName().equals("") || author.getName() == null ||
+                author.getBirthPlace().equals("") || author.getBirthPlace() == null ||
+        author.getBiography().equals("") || author.getBiography() == null ||
+                author.getImageUrl().equals("") || author.getImageUrl() == null)
+            throw new ApiException("Invalid input");
         old.setName(author.getName());
         old.setBirthDate(author.getBirthDate());
         old.setBirthPlace(author.getBirthPlace());
@@ -54,6 +61,17 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> getFavouriteAuthors() {
         return authorRepository.getFavouriteAuthors();
+    }
+
+    @Override
+    public Page<Author> getAllAuthorsByPageAndSearch(String search, Pageable pageable) {
+        if(search != null && !search.isEmpty()) {
+            search = "%" + search + "%";
+        }
+        else {
+            search = null;
+        }
+        return authorRepository.Search(search, pageable);
     }
 
     public void checkUniqueId(int id){
