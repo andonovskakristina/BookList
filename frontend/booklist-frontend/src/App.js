@@ -11,6 +11,7 @@ import FavouriteBooks from "./components/FavouriteBooks";
 import Authors from "./components/Authors";
 import CreateNewAuthor from "./components/CreateNewAuthor";
 import EditAuthor from "./components/EditAuthor";
+import AuthorDetails from "./components/AuthorDetails";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path={"/books/:ISBN/edit"} component={EditBook}/>
                 <Route path={"/authors/:authorId/edit"} component={EditAuthor}/>
                 <Route path={"/books/:ISBN/details"} component={BookDetails}/>
+                <Route path={"/authors/:authorId/details"} component={AuthorDetails}/>
                 <Route path={"/books"} exact component={() => <Books read={false} favourite={false} />}/>
                 <Route path={"/authors"} exact component={Authors}/>
                 <Route path={"/books/read"} exact component={ReadBooks}/>

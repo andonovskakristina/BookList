@@ -8,7 +8,9 @@ class BookCarousel extends Component {
         this.state = {
             books: [],
             randomBooks: [],
-            thisBookISBN: props.ISBN
+            thisBookISBN: props.ISBN,
+            booksByAuthor: props.booksByAuthor,
+            authorId: props.authorId
         }
     }
 
@@ -17,7 +19,14 @@ class BookCarousel extends Component {
             .then(response => {
                 console.log(response);
                 this.setState({ books: response.data});
-                this.randomBooks();
+                if(!this.props.booksByAuthor) {
+                    this.randomBooks();
+                }
+                else {
+                    this.setState({
+                        randomBooks: this.state.books.filter(book => book.authorId == this.props.authorId)
+                    });
+                }
             })
             .catch(error => console.log(error.response))
     }

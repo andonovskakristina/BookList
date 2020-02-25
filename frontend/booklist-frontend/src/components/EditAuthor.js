@@ -169,7 +169,7 @@ class EditAuthor extends Component{
                                 Reset
                             </button>
 
-                            <Link to={"/books"}>
+                            <Link to={"/authors"}>
                                 <button type="button"
                                         className="btn btn-danger text-upper my-2 ml-2 mr-0">
                                     Cancel

@@ -208,7 +208,9 @@ class BookDetails extends Component{
                                 <h5>You may also like</h5>
                                 <hr style={{border: "1px solid darkgray"}}/>
                                 <div style={{width: "180px"}}>
-                                    <BookCarousel ISBN={this.state.ISBN}/>
+                                    <BookCarousel ISBN={this.state.ISBN}
+                                                  booksByAuthor={false}
+                                                  authorId={"0"}/>
                                 </div>
                             </div>
                         </div>

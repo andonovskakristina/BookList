@@ -100,7 +100,8 @@ class Books extends Component {
                     key={author.id}
                     onDelete={this.onDeleteElement}
                     style={{display: "inline-block"}}
-            /></div>);
+            />
+            </div>);
         return (
             <div className="container my-4"
                  style={{width: "80%", backgroundColor: "whitesmoke"}}>
