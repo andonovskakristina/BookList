@@ -4,9 +4,28 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 class DatePickerr extends React.Component {
-    state = {
-        startDate: new Date()
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            startDate: new Date()
+        };
+    }
+
+    componentDidMount() {
+        this.setState({
+            startDate: this.props.selectedDate ? new Date(this.props.selectedDate) : new Date()
+        });
+    }
+/*
+    static getDerivedStateFromProps(props = this.props, state = this.state) {
+        if (this.state.startDate !== props.value) {
+            return {
+                value: props.value,
+                computed_prop: heavy_computation(props.value)
+            }
+        }
+        return null
+    }*/
 
     handleChange = date => {
         this.setState({
@@ -33,7 +52,7 @@ class DatePickerr extends React.Component {
     render() {
         return (
             <DatePicker
-                selected={this.state.startDate}
+                selected={this.props.selectedDate ? new Date(this.props.selectedDate) : new Date()}
                 onChange={this.handleChange}
                 className={"form-control"}
                 dateFormat={"yyy-MM-dd"}

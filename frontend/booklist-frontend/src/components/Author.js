@@ -2,8 +2,13 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import Card from "react-bootstrap/Card"
 import css from "../css/authors.css"
+import ModalWindow from "./ModalWindow";
 
 const Author = (props) => {
+
+    var onDelete = () => {
+        props.onDelete(props.authorId);
+    };
 
         return(
             <Card className={"m-auto"} style={{ width: '18rem' }}>
@@ -14,11 +19,7 @@ const Author = (props) => {
                               title={"Edit Author"}>
                             <span className="fa fa-edit"/>
                         </Link>
-                        <button className="btn btn-sm btn-secondary m-1"
-                                onClick={()=>props.onDelete(props.authorId)}
-                                title={"Delete Author"}>
-                            <span className="fa fa-remove"/>
-                        </button>
+                        <ModalWindow name={props.name} onDelete={onDelete}/>
                     </div>
                     <Card.Img variant="top"
                               src={props.imageUrl}

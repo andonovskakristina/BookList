@@ -4,6 +4,7 @@ import axios from "axios";
 import backgroundImage from "../images/createNewBackground.jpg"
 import css from "../css/createNewBook.css"
 import DatePickerr from "./DatePicker";
+import PageNotFound from "./PageNotFound";
 
 class EditAuthor extends Component{
     constructor(props) {
@@ -15,7 +16,8 @@ class EditAuthor extends Component{
             birthPlace: "",
             imageUrl: "",
             biography: "",
-            oldState: {}
+            oldState: {},
+            notFound: false
         }
     }
 
@@ -36,6 +38,10 @@ class EditAuthor extends Component{
                         "biography": response.data.biography,
                     }
                 })
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({notFound: true});
             });
     }
 
@@ -107,77 +113,89 @@ class EditAuthor extends Component{
 
     render() {
         return (
-            <div style={{backgroundImage: `url(${backgroundImage})`,
-                backgroundSize: "cover", paddingTop: "50px", paddingBottom: "50px",
-                width: "100%", height: "100%"}}>
-                <div className="container text-center"
-                     style={{marginTop: "0px", width: "60%", padding: "10px",
-                         border: "1px solid darkgray", borderRadius: "6px", backgroundColor: "white"}}>
-                    <h4>Edit Author</h4>
-                    <hr style={{border: "0.5px solid darkgray", padding: 0}}/>
-                    <form className={"m-auto"}
-                          style={{width: "90%"}}
-                          onSubmit={this.onFormSubmit}>
-                        <input type={"text"}
-                               name={"name"}
-                               placeholder={"Author name"}
-                               className={"form-control my-2"}
-                               onChange={this.onInputChange}
-                               defaultValue={this.state.name}
-                               value={this.state.name}/>
-                        <input type={"text"}
-                               name={"birthPlace"}
-                               placeholder={"Birth place"}
-                               className={"form-control my-2"}
-                               onChange={this.onInputChange}
-                               defaultValue={this.state.birthPlace}
-                               value={this.state.birthPlace}/>
-                        <input type={"text"}
-                               name={"imageUrl"}
-                               placeholder={"Image Url"}
-                               className={"form-control my-2"}
-                               onChange={this.onInputChange}
-                               defaultValue={this.state.imageUrl}
-                               value={this.state.imageUrl}/>
-                        <textarea type={"text"}
-                                  name={"biography"}
-                                  placeholder={"Author biography"}
-                                  className={"form-control my-2"}
-                                  onChange={this.onInputChange}
-                                  defaultValue={this.state.biography}
-                                  value={this.state.biography}/>
-                        <div className={"text-left my-2"}
-                             style={{color: "#495057"}}>Date of Birth
-                            <DatePickerr name={"publicationDate"}
-                                         onChange={this.onInputChange}
-                                         onDateChange={this.onDateChange}/></div>
-                        <h6 className={"text-danger text-left"}
-                            hidden={true}
-                            id={"errorMessage"}>All Fields Are Required!</h6>
+            <div style = {{height: "90vh"}}>
+                {this.state.notFound === true ?
+                    <PageNotFound/>
+                    :
+                    <div style={{
+                        backgroundImage: `url(${backgroundImage})`,
+                        backgroundSize: "cover", paddingTop: "50px", paddingBottom: "50px",
+                        width: "100%", height: "100%"
+                    }}>
+                        <div className="container text-center"
+                             style={{
+                                 marginTop: "0px", width: "60%", padding: "10px",
+                                 border: "1px solid darkgray", borderRadius: "6px", backgroundColor: "white"
+                             }}>
+                            <h4>Edit Author</h4>
+                            <hr style={{border: "0.5px solid darkgray", padding: 0}}/>
+                            <form className={"m-auto"}
+                                  style={{width: "90%"}}
+                                  onSubmit={this.onFormSubmit}>
+                                <input type={"text"}
+                                       name={"name"}
+                                       placeholder={"Author name"}
+                                       className={"form-control my-2"}
+                                       onChange={this.onInputChange}
+                                       defaultValue={this.state.name}
+                                       value={this.state.name}/>
+                                <input type={"text"}
+                                       name={"birthPlace"}
+                                       placeholder={"Birth place"}
+                                       className={"form-control my-2"}
+                                       onChange={this.onInputChange}
+                                       defaultValue={this.state.birthPlace}
+                                       value={this.state.birthPlace}/>
+                                <input type={"text"}
+                                       name={"imageUrl"}
+                                       placeholder={"Image Url"}
+                                       className={"form-control my-2"}
+                                       onChange={this.onInputChange}
+                                       defaultValue={this.state.imageUrl}
+                                       value={this.state.imageUrl}/>
+                                <textarea type={"text"}
+                                          name={"biography"}
+                                          placeholder={"Author biography"}
+                                          className={"form-control my-2"}
+                                          onChange={this.onInputChange}
+                                          defaultValue={this.state.biography}
+                                          value={this.state.biography}/>
+                                <div className={"text-left my-2"}
+                                     style={{color: "#495057"}}>Date of Birth
+                                    <DatePickerr name={"publicationDate"}
+                                                 onChange={this.onInputChange}
+                                                 onDateChange={this.onDateChange}
+                                                 selectedDate={this.state.birthDate}
+                                    /></div>
+                                <h6 className={"text-danger text-left"}
+                                    hidden={true}
+                                    id={"errorMessage"}>All Fields Are Required!</h6>
 
-                        <div className={"row m-0 mt-3 justify-content-end"}>
-                            <button
-                                type="submit"
-                                className="btn btn-primary text-upper m-2"
-                                id="btnSave">
-                                Save
-                            </button>
+                                <div className={"row m-0 mt-3 justify-content-end"}>
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary text-upper m-2"
+                                        id="btnSave">
+                                        Save
+                                    </button>
 
-                            <button type="button"
-                                    onClick={this.onReset}
-                                    className="btn btn-warning text-upper m-2">
-                                Reset
-                            </button>
+                                    <button type="button"
+                                            onClick={this.onReset}
+                                            className="btn btn-warning text-upper m-2">
+                                        Reset
+                                    </button>
 
-                            <Link to={"/authors"}>
-                                <button type="button"
-                                        className="btn btn-danger text-upper my-2 ml-2 mr-0">
-                                    Cancel
-                                </button>
-                            </Link>
+                                    <Link to={"/authors"}>
+                                        <button type="button"
+                                                className="btn btn-danger text-upper my-2 ml-2 mr-0">
+                                            Cancel
+                                        </button>
+                                    </Link>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                }
             </div>
         );
     }

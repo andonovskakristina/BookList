@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
+import ModalWindow from "./ModalWindow";
 
 class Book extends Component{
     constructor(props) {
@@ -39,6 +40,10 @@ class Book extends Component{
 
     markAsRead() {
         this.setState({read: !this.state.read})
+    };
+
+    onDelete = () => {
+        this.props.onDelete(this.state.ISBN);
     };
 
     render() {
@@ -121,11 +126,7 @@ class Book extends Component{
                               title={"Edit Book"}>
                             <span className="fa fa-edit"/>
                         </Link>
-                        <button className="btn btn-sm btn-outline-secondary mx-1"
-                                onClick={()=>this.props.onDelete(this.state.ISBN)}
-                                title={"Delete Book"}>
-                            <span className="fa fa-remove"/>
-                        </button>
+                            <ModalWindow title={this.state.title} onDelete={this.onDelete}/>
                         </div>
 
                     </div>

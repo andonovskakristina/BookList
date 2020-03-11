@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-dropdown-select";
 
 const SingleSelect = (props) => {
@@ -12,7 +12,11 @@ const SingleSelect = (props) => {
         options[i] = {label: authors[i], value: indexes[i]}
     }
 
-    const [selected, setSelected] = useState([]);
+    const [selected, setSelected] = useState(props.selectedAuthor);
+
+    useEffect(() => {
+        setSelected(props.selectedAuthor);
+    }, [props.selectedAuthor]);
 
     return (
         <div style={{textAlign: "left !important", fontSize: "1rem !important"}} className={"my-2"}>
@@ -25,6 +29,7 @@ const SingleSelect = (props) => {
                 placeholder={"Author"}
                 className={"form-control"}
                 multi={isMulti}
+                values={props.selectedAuthor ? [props.selectedAuthor] : []}
             />
         </div>
     );
