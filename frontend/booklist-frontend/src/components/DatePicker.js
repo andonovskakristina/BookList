@@ -13,25 +13,14 @@ class DatePickerr extends React.Component {
 
     componentDidMount() {
         this.setState({
-            startDate: this.props.selectedDate ? new Date(this.props.selectedDate) : new Date()
+            startDate: this.props.selectedDate ? new Date(this.props.selectedDate) : this.state.startDate
         });
     }
-/*
-    static getDerivedStateFromProps(props = this.props, state = this.state) {
-        if (this.state.startDate !== props.value) {
-            return {
-                value: props.value,
-                computed_prop: heavy_computation(props.value)
-            }
-        }
-        return null
-    }*/
 
     handleChange = date => {
         this.setState({
             startDate: date
         });
-
         this.props.onDateChange(this.formatDate(date));
     };
 
@@ -52,7 +41,7 @@ class DatePickerr extends React.Component {
     render() {
         return (
             <DatePicker
-                selected={this.props.selectedDate ? new Date(this.props.selectedDate) : new Date()}
+                selected={this.props.selectedDate ? new Date(this.props.selectedDate) : this.state.startDate}
                 onChange={this.handleChange}
                 className={"form-control"}
                 dateFormat={"yyy-MM-dd"}

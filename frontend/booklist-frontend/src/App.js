@@ -12,6 +12,7 @@ import Authors from "./components/Authors";
 import CreateNewAuthor from "./components/CreateNewAuthor";
 import EditAuthor from "./components/EditAuthor";
 import AuthorDetails from "./components/AuthorDetails";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path={"/books/favourite"} exact component={FavouriteBooks}/>
                 <Route path={"/books/new"} component={CreateNewBook}/>
                 <Route path={"/authors/new"} component={CreateNewAuthor}/>
+                <Route path={"/"} component={Home}/>
             </Switch>
         </Router>
     </div>
