@@ -26,22 +26,20 @@ class Books extends Component {
         axios.get("http://localhost:8080/api/genres")
             .then(response => {
                 this.setState({genreOptions: response.data.map(genre => genre.name)});
-                console.log("resp " + response);
                 console.log(response);
-                console.log(this.state.genreOptions)
             })
             .catch(error => {
-                console.log("error " + error)
+                console.log(error)
             });
 
-        axios.get("http://localhost:8080/api/authors")
+        axios.get("http://localhost:8080/api/authors/allAuthors")
             .then(response => {
-                this.setState({authorOptions: response.data.content.map(author => author.name)});
-                this.setState({authorOptionsIndexes: response.data.content.map(author => author.id)});
-                console.log("response: " + response);
+                this.setState({authorOptions: response.data.map(author => author.name)});
+                this.setState({authorOptionsIndexes: response.data.map(author => author.id)});
+                console.log(response);
             })
             .catch(error => {
-                console.log("error: " + error)
+                console.log(error);
             });
 
         axios.get("http://localhost:8080/api/books/minMaxNumberPages")

@@ -29,25 +29,23 @@ class CreateNewBook extends Component{
     }
 
     componentDidMount() {
-        axios.get("http://localhost:8080/api/authors")
+        axios.get("http://localhost:8080/api/authors/allAuthors")
             .then(response => {
-                this.setState({authorOptions: response.data.content.map(author => author.name)});
-                this.setState({authorOptionsIndexes: response.data.content.map(author => author.id)});
-                console.log("response: " + response);
+                this.setState({authorOptions: response.data.map(author => author.name)});
+                this.setState({authorOptionsIndexes: response.data.map(author => author.id)});
+                console.log(response);
             })
             .catch(error => {
-                console.log("error: " + error)
+                console.log(error);
             });
 
         axios.get("http://localhost:8080/api/genres")
             .then(response => {
                 this.setState({genreOptions: response.data.map(genre => genre.name)});
-                console.log("resp " + response);
                 console.log(response);
-                console.log(this.state.genreOptions)
             })
             .catch(error => {
-                console.log("error " + error)
+                console.log(error);
             });
     }
 
@@ -125,20 +123,70 @@ class CreateNewBook extends Component{
 
     render() {
         return (
-            <div style={{backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", paddingTop: "50px", paddingBottom: "50px", width: "100%", height: "100%"}}>
-            <div className="container text-center" style={{marginTop: "0px", width: "60%", padding: "10px", border: "1px solid darkgray", borderRadius: "6px", backgroundColor: "white"}}>
-                <h4>Create New Book</h4><hr style={{border: "0.5px solid darkgray", padding: 0}}/>
-                <form className={"m-auto"} style={{width: "90%"}} onSubmit={this.onFormSubmit}>
-                    <input type={"text"} name={"title"} placeholder={"Book title"} className={"form-control my-2"} onChange={this.onInputChange}/>
-                    <input type={"text"} name={"ISBN"} placeholder={"Book ISBN"} className={"form-control my-2"} onChange={this.onInputChange}/>
-                    <SingleSelect name={"authorName"} value={""} authorOptions={this.state.authorOptions} authorOptionsIndexes={this.state.authorOptionsIndexes} onAuthorChange={this.onAuthorChange} isMulti={false}/>
-                    <MultipleSelect name={"genres"} genreOptions = {this.state.genreOptions} onGenreChange={this.onGenreChange}/>
-                    <input type={"number"} name={"numberPages"} pattern="[0-9]*" placeholder={"Number of Pages"} className={"form-control my-2"} onChange={this.onInputChange}/>
-                    <input type={"number"} step={".01"} max={"5.00"} name={"review"} placeholder={"Book review"} className={"form-control my-2"} onChange={this.onInputChange}/>
-                    <input type={"text"} name={"imageUrl"} placeholder={"Image Url"} className={"form-control my-2"} onChange={this.onInputChange}/>
-                    <textarea type={"text"} name={"description"} placeholder={"Book description"} className={"form-control my-2"} onChange={this.onInputChange}/>
-                    <div className={"text-left my-2"} style={{color: "#495057"}}>Publication Date <DatePickerr name={"publicationDate"} onChange={this.onInputChange} onDateChange={this.onDateChange}/></div>
-                    <h6 className={"text-danger text-left"} hidden={true} id={"errorMessage"}>All Fields Are Required!</h6>
+            <div style={{backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: "cover", paddingTop: "50px",
+                paddingBottom: "50px", width: "100%", height: "100%"}}>
+            <div className="container text-center"
+                 style={{marginTop: "0px", width: "60%", padding: "10px",
+                     border: "1px solid darkgray", borderRadius: "6px", backgroundColor: "white"}}>
+                <h4>Create New Book</h4>
+                <hr style={{border: "0.5px solid darkgray", padding: 0}}/>
+                <form className={"m-auto"}
+                      style={{width: "90%"}}
+                      onSubmit={this.onFormSubmit}>
+                    <input type={"text"}
+                           name={"title"}
+                           placeholder={"Book title"}
+                           className={"form-control my-2"}
+                           onChange={this.onInputChange}/>
+                    <input type={"text"}
+                           name={"ISBN"}
+                           placeholder={"Book ISBN"}
+                           className={"form-control my-2"}
+                           onChange={this.onInputChange}/>
+                    <SingleSelect name={"authorName"}
+                                  value={""}
+                                  authorOptions={this.state.authorOptions}
+                                  authorOptionsIndexes={this.state.authorOptionsIndexes}
+                                  onAuthorChange={this.onAuthorChange}
+                                  isMulti={false}/>
+                    <MultipleSelect name={"genres"}
+                                    genreOptions = {this.state.genreOptions}
+                                    onGenreChange={this.onGenreChange}/>
+                    <input type={"number"}
+                           name={"numberPages"}
+                           pattern="[0-9]*"
+                           placeholder={"Number of Pages"}
+                           className={"form-control my-2"}
+                           onChange={this.onInputChange}/>
+                    <input type={"number"}
+                           step={".01"}
+                           max={"5.00"}
+                           name={"review"}
+                           placeholder={"Book review"}
+                           className={"form-control my-2"}
+                           onChange={this.onInputChange}/>
+                    <input type={"text"}
+                           name={"imageUrl"}
+                           placeholder={"Image Url"}
+                           className={"form-control my-2"}
+                           onChange={this.onInputChange}/>
+                    <textarea type={"text"}
+                              name={"description"}
+                              placeholder={"Book description"}
+                              className={"form-control my-2"}
+                              onChange={this.onInputChange}/>
+                    <div className={"text-left my-2"}
+                         style={{color: "#495057"}}>Publication Date
+                        <DatePickerr name={"publicationDate"}
+                                     onChange={this.onInputChange}
+                                     onDateChange={this.onDateChange}/>
+                    </div>
+                    <h6 className={"text-danger text-left"}
+                        hidden={true}
+                        id={"errorMessage"}>
+                        All Fields Are Required!
+                    </h6>
 
                     <div className={"row m-0 mt-3 justify-content-end"}>
                         <button

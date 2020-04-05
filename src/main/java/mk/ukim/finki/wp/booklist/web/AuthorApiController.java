@@ -63,6 +63,11 @@ public class AuthorApiController {
         authorService.delete(id);
     }
 
+    @GetMapping("/allAuthors")
+    public List<Author> getAllAuthors(){
+        return authorService.getAllAuthors();
+    }
+
     @GetMapping()
     public Page<Author> getAllAuthors(@RequestParam(value = "search",
                                                     required = false) String search,
