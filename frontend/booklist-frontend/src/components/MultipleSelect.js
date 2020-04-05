@@ -21,9 +21,8 @@ const MultiSelect = (props) => {
             <Select
                 options={options}
                 value={selected}
-                onChange={setSelected}
                 labelledBy={"Select"}
-                onDropdownClose={()=>props.onGenreChange(selected)}
+                onChange={e => { setSelected(e); props.onGenreChange(e)}}
                 searchable={true}
                 placeholder={"Genres"}
                 multi={true}

@@ -17,7 +17,8 @@ class Books extends Component {
             selectedAuthorsIndexes: [],
             selectedMinPages: 0,
             selectedMaxPages: 0,
-            search: ""
+            search: "",
+            reset: false
         }
     }
 
@@ -88,6 +89,7 @@ class Books extends Component {
                                placeholder="Search"
                                aria-label="Search"
                                onChange={this.onSearchChange}
+                               value={this.state.search}
                         />
                         </div>
                     </form>
@@ -96,7 +98,8 @@ class Books extends Component {
                 <div className={"row justify-content-center"}>
                 <RangeSlider minPages={this.state.minPages}
                              maxPages={this.state.maxPages}
-                             filterByPage={this.filterByPage}/>
+                             filterByPage={this.filterByPage}
+                />
                 </div>
                 <hr/>
                 <div className={"row text-center justify-content-center"}>
@@ -106,7 +109,9 @@ class Books extends Component {
                         <div style={{width: "90%"}}>
                         <MultipleSelect name={"genres"}
                                         genreOptions = {this.state.genreOptions}
-                                        onGenreChange={this.onGenreChange} style={{height: "100px"}}/>
+                                        onGenreChange={this.onGenreChange}
+                                        style={{height: "100px"}}
+                        />
                         </div>
                     </div>
                 </div>
@@ -121,7 +126,8 @@ class Books extends Component {
                                           authorOptions={this.state.authorOptions}
                                           authorOptionsIndexes={this.state.authorOptionsIndexes}
                                           onAuthorChange={this.onAuthorChange}
-                                          isMulti={true}/>
+                                          isMulti={true}
+                            />
                         </div>
                     </div>
                 </div>

@@ -150,8 +150,23 @@ class Books extends Component {
                     <Filters onFilter={this.onFilter}/>
                 </div>
                 <div className={"col-md-9"}>
+                    {this.state.read
+                        ?
+                        <div className={"row pl-3"}>
+                            <h4>Read Books</h4>
+                        </div>
+                        :
+                        <span></span>
+                    }
+                    {this.state.favourite
+                        ?
+                        <div className={"row pl-3"}>
+                            <h4>Favourite Books</h4>
+                        </div>
+                        :
+                        <span></span>
+                    }
                 <div className="row m-0 mb-3 p-3" style={{backgroundColor: "whitesmoke"}}>
-
                     {this.state.List.length > 0 ?
                         <div className={"text-right"} style={{flex: "auto"}}>
                             <ButtonToolbar style={{display: "inline-block"}}
@@ -205,7 +220,9 @@ class Books extends Component {
                             <br/>
                             <div className={"row text-right"} style={{display: "block", flex: "auto"}}>
                                 <Link to={"/books/new"}>
-                                    <button className="btn btn-outline-secondary">
+                                    <button className="btn btn-outline-secondary"
+                                            hidden={this.state.read || this.state.favourite}
+                                    >
                                         <span><strong>Add new book</strong></span>
                                     </button>
                                 </Link>

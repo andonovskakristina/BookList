@@ -139,7 +139,7 @@ class BookDetails extends Component{
                 {this.state.notFound === true ?
                     <PageNotFound/>
                     :
-                    <div className={"container mt-4"}>
+                    <div className={"container my-4"}>
                         <div className={"row"}>
                             <div className={"col-md-3"}>
                                 <div style={{width: "90%"}}
