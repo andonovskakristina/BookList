@@ -57,7 +57,7 @@ class EditBook extends Component {
                         "review": response.data.review,
                         "numberPages": response.data.numberPages,
                         "imageUrl": response.data.imageUrl,
-                        "genres": response.data.genres,
+                        "genres": response.data.bookGenres,
                         "description": response.data.description
                     }
                 })
