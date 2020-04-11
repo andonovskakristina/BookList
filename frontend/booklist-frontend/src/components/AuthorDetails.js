@@ -72,7 +72,7 @@ class BookDetails extends Component{
                                     <h4 style={{display: "block"}}>{this.state.name}</h4>
                                 </div>
                                 <div className={"row mt-3"}>
-                                    <div>{this.state.biography}</div>
+                                    <div className={"text-break"}>{this.state.biography}</div>
                                 </div>
                             </div>
                             <div className={"col-md-3 d-flex justify-content-end"}>

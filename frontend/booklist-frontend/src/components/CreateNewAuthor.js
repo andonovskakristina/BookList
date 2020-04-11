@@ -28,6 +28,8 @@ class CreateNewAuthor extends Component{
         newAuthor.set('imageUrl', this.state.imageUrl);
         newAuthor.set('biography', this.state.biography);
 
+        console.log(newAuthor);
+
         axios.post("http://localhost:8080/api/authors",newAuthor , {
             headers: {
                 'Content-Type':'application/json'
@@ -74,6 +76,7 @@ class CreateNewAuthor extends Component{
 
     render() {
         return (
+            <div style = {{height: "90vh"}}>
             <div style={{backgroundImage: `url(${backgroundImage})`,
                 backgroundSize: "cover", paddingTop: "50px", paddingBottom: "50px",
                 width: "100%", height: "100%"}}>
@@ -131,6 +134,7 @@ class CreateNewAuthor extends Component{
                         </div>
                     </form>
                 </div>
+            </div>
             </div>
         );
     }

@@ -21,8 +21,5 @@ public class Genre {
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    /*@JoinTable(name = "BOOK_GENRE",
-            joinColumns = @JoinColumn(name = "genre_name", referencedColumnName = "genre_name"),
-            inverseJoinColumns = @JoinColumn(name = "ISBN", referencedColumnName = "ISBN"))*/
     private List<Book> books;
 }

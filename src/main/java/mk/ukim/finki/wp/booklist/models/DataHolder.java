@@ -197,6 +197,18 @@ public class DataHolder {
                         g.getName().equalsIgnoreCase("Fiction"))
                 .collect(Collectors.toList())));
 
+        books.add(new Book("0007442912", "Insurgent", LocalDate.of(2012, 5, 1), authors.get(2), 4.04, 525, "One choice can transform you—or it can destroy you. But every choice has consequences, and as unrest surges in the factions all around her, Tris Prior must continue trying to save those she loves—and herself—while grappling with haunting questions of grief and forgiveness, identity and loyalty, politics and love.\n" +
+                "\n" +
+                "Tris's initiation day should have been marked by celebration and victory with her chosen faction; instead, the day ended with unspeakable horrors. War now looms as conflict between the factions and their ideologies grows. And in times of war, sides must be chosen, secrets will emerge, and choices will become even more irrevocable—and even more powerful. Transformed by her own decisions but also by haunting grief and guilt, radical new discoveries, and shifting relationships, Tris must fully embrace her Divergence, even if she does not know what she may lose by doing so.\n" +
+                "\n" +
+                "New York Times bestselling author Veronica Roth's much-anticipated second book of the dystopian DIVERGENT series is another intoxicating thrill ride of a story, rich with hallmark twists, heartbreaks, romance, and powerful insights about human nature.", "", false, false, "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1325667729l/11735983.jpg", genres.stream()
+                .filter(g -> g.getName().equalsIgnoreCase("Fantasy") ||
+                        g.getName().equalsIgnoreCase("Fiction") ||
+                        g.getName().equalsIgnoreCase("Young Adult") ||
+                        g.getName().equalsIgnoreCase("Science Fiction") ||
+                        g.getName().equalsIgnoreCase("Adventure"))
+                .collect(Collectors.toList())));
+
         books.add(new Book("0450040186", "The Shining", LocalDate.of(1977, 1, 28), authors.get(5), 4.22, 659, "Jack Torrance's new job at the Overlook Hotel is the perfect chance for a fresh start. As the off-season caretaker at the atmospheric old hotel, he'll have plenty of time to spend reconnecting with his family and working on his writing. But as the harsh winter weather sets in, the idyllic location feels ever more remote...and more sinister. And the only one to notice the strange and terrible forces gathering around the Overlook is Danny Torrance, a uniquely gifted five-year-old.", "", false, false,"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1353277730l/11588.jpg" ,genres.stream()
                 .filter(g -> g.getName().equalsIgnoreCase("Horror") ||
                         g.getName().equalsIgnoreCase("Fiction") ||

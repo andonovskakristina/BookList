@@ -205,7 +205,7 @@ class BookDetails extends Component{
                             </span>
                                 </div>
                                 <div className={"row mt-3"}>
-                                    <div>{this.state.description}</div>
+                                    <div className={"text-break"}>{this.state.description}</div>
                                 </div>
                             </div>
                             <div className={"col-md-3 d-flex justify-content-end"}>
